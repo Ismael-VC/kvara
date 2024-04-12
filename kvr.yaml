@@ -1,0 +1,20 @@
+# thanks to makeworld for new instructions and multiline comment support
+
+filetype: kvrtal
+
+detect:
+  filename: "\\.(tal|kvr|uxn|kvrtal|uxntal)$"
+
+rules:
+  - identifier: "[@,;.&][^\ \n\r]+"
+  - constant: "[\"#'|$][^\ \n\r]+"
+  - statement: "\\b(BRK|LIT|INC|POP|DUP|NIP|SWP|OVR|ROT|EQU|NEQ|GTH|LTH|JMP|JCN|JSR|STH|LDZ|STZ|LDR|STR|LDA|STA|DEI|DEO|ADD|SUB|MUL|DIV|AND|ORA|EOR|SFT)[2rk]{0,3}\\b"
+  - comment:
+      start: "\\(\\ "
+      end: "\\ \\)"
+      rules: []
+  - comment:
+      start: "\\\\\\ "
+      end: "$"
+      rules: []
+  - symbol: "\\[|\\]"

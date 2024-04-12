@@ -1,0 +1,13 @@
+{
+    "colorcolumn": 80,
+    "colorscheme": "zenburn",
+    "diffgutter": true,
+    "hlsearch": true,
+    "indentchar": "⋅",
+    "rmtrailingws": true,
+    "scrollbar": true,
+    "softwrap": true,
+    "tabmovement": true,
+    "tabtospaces": true,
+    "wordwrap": true
+}
