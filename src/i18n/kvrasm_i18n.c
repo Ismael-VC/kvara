@@ -77,3 +77,8 @@
 #ifdef LANG_ES
 	#include "kvrasm_es.c"
 #endif
+
+// kvrasm assembler toki pona translations.
+#ifdef LANG_TOK
+	#include "kvrasm_tok.c"
+#endif

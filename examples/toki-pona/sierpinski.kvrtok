@@ -1,0 +1,17 @@
+( kvrasm-tok sierpinski.kvrtok sierpinski-tok.rom && uxncli sierpinski-tok.rom )
+
+@sierpinski ( -> )
+	( len ) [ NAN2p 0a18 ] [ NAN2p 2018 ] 
+	( suli ) [ NAN2 &suli 1001 ] NWE
+	&>lipu ( -- )
+		KIN MUTa
+		&>kon ( length -- )
+			TOKap
+			#01 NWE KIN ?&>kon
+		&>linja ( suli n -- )
+			LALa KIN2p ?{ WEK2p LAN2ap } TOKp TOKap
+			MUT NSIa ,&suli LKP LIL ?&>linja
+		WEK2 KNP2p TOKp
+		#01 NWE MUTa ?&>lipu
+	WEK WEK2p WEK2p PIN
+
