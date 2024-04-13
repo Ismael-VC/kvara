@@ -29,7 +29,7 @@ static Item labels[0x400], refs[0x1000], macros[0x100];
 
 static uint8_t *runes = "|$@&,_.-;=!?#\"%~";
 static uint8_t *hexad = "0123456789abcdef";
-static uint8_t ops[][4] = {
+static uint8_t ops[][OPCODE_LENGTH] = {
 	LIT, INC, POP, NIP, SWP, ROT, DUP, OVR,
 	EQU, NEQ, GTH, LTH, JMP, JCN, JSR, STH,
 	LDZ, STZ, LDR, STR, LDA, STA, DEI, DEO,
@@ -39,12 +39,13 @@ static uint8_t ops[][4] = {
 static int   find(uint8_t *s, uint8_t t) { int i = 0; uint8_t c; while((c = *s++)) { if(c == t) return i; i++; } return -1; }
 static int   shex(uint8_t *s) { int d, n = 0; uint8_t c; while((c = *s++)) { d = find(hexad, c); if(d < 0) return d; n = n << 4, n |= d; } return n; }
 static int   scmp(uint8_t *a, uint8_t *b, int len) { int i = 0; while(a[i] == b[i]) if(!a[i] || ++i >= len) return 1; return 0; }
+static int   slen(char *a) { int i = 0; while (a[i]) i++; return i; }
 static uint8_t *copy(uint8_t *src, uint8_t *dst, uint8_t c) { while(*src && *src != c) *dst++ = *src++; *dst++ = 0; return dst; }
 static uint8_t *save(uint8_t *s, uint8_t c) { uint8_t *o = dictnext; while((*dictnext++ = *s++) && *s); *dictnext++ = c; return o; }
 static uint8_t *join(uint8_t *a, uint8_t j, uint8_t *b) { uint8_t *res = dictnext; save(a, j), save(b, 0); return res; }
 
 #define ishex(x) (shex(x) >= 0)
-#define isopc(x) (findopcode(x) || scmp(x, BRK, 4))
+#define isopc(x) (findopcode(x) || scmp(x, BRK, OPCODE_LENGTH))
 #define isinvalid(x) (!x[0] || ishex(x) || isopc(x) || find(runes, x[0]) >= 0)
 #define writeshort(x) (writebyte(x >> 8, ctx) && writebyte(x & 0xff, ctx))
 #define findlabel(x) finditem(x, labels, labels_len)
@@ -80,14 +81,14 @@ static Item * finditem(uint8_t *name, Item *list, int len) {
 static uint8_t findopcode(uint8_t *s) {
 	int i;
 	for(i = 0; i < 0x20; i++) {
-		int m = 3;
-		if(!scmp(ops[i], s, 3)) continue;
+		int m = slen(ops[i]); 
+		if(!scmp(ops[i], s, m)) continue;
 		if(!i) i |= (1 << 7);
 		while(s[m]) {
 			if(s[m] == '2')
 				i |= (1 << 5);
-			else if(s[m] == RETURN_MODE)
-				i |= (1 << 6);
+			else if(s[m] == RETURN_MODE) {
+				i |= (1 << 6); }
 			else if(s[m] == KEEP_MODE)
 				i |= (1 << 7);
 			else

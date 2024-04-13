@@ -9,7 +9,7 @@
 			ELDkr
 			#01 SUB DUP ?&>plenigita
 		&>plenigi ( longeco i -- )
-			ABOk DUP2r ?{ RET2r ABO2kr } ELDr ELDkr
+			KBOk DUP2r ?{ RET2r ABO2kr } ELDr ELDkr
 			PGR ADIk ,&grandeco ŜAR MGO ?&>plenigi
 		RET2 SUP2r ELDr
 		#01 SUB PGRk ?&>vertikala
