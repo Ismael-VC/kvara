@@ -113,7 +113,7 @@ static int walkcomment(FILE *f, Context *ctx) {
 static int walkmacro(Item *m, Context *ctx) {
 	char c, *dataptr = m->data, *cptr = token;
 	while((c = *dataptr++)) {
-		if(c < 0x21) {
+		if((uint8_t) c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, NULL, ctx)) return 0;
 			cptr = token;
@@ -133,7 +133,7 @@ static int walkfile(FILE *f, Context *ctx) {
 		else if (incomment) continue;
 		if(backslash && c == 0x20) {*cptr-- = 0, incomment = 1, backslash = 0; continue;}
 		if(c == '\\') backslash = 1;
-		if(c < 0x21) {
+		if((uint8_t) c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, f, ctx)) return 0;
 			cptr = token;
