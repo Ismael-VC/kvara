@@ -1,0 +1,20 @@
+# thanks to makeworld for new instructions and multiline comment support
+
+filetype: kvrtal-es
+
+detect:
+  filename: "\\.(tales|kvres|uxnes|kvrtales|uxntales)$"
+
+rules:
+  - identifier: "[@,;.&][^\ \n\r]+"
+  - constant: "[\"#'|$][^\ \n\r]+"
+  - statement: "\\b(INT|LIT|INC|RET|DUP|COR|CAM|SOB|ROT|IGU|NIG|MAQ|MEQ|SAL|SCN|SRR|RES|CAC|GUC|CAR|GUR|CAA|GUA|DIE|DIS|SUM|SUS|MUL|DIV|YNB|ONB|OEX|DES)[2cr]{0,3}\\b"
+  - comment:
+      start: "\\(\\ "
+      end: "\\ \\)"
+      rules: []
+  - comment:
+      start: "\\\\\\ "
+      end: "$"
+      rules: []
+  - symbol: "\\[|\\]"

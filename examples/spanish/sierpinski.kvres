@@ -1,0 +1,16 @@
+( kvrasm-es sierpinski.kvres sierpinski.rom && uxncli sierpinski.rom )
+
+@sierpinski ( -> )
+	( máscara ) [ LIT2r 0a18 ] [ LIT2r 2018 ]
+	( tamaño ) [ LIT2 &tamaño 1001 ] SUS
+	&>vertical ( -- )
+		DUP INCc
+		&>relleno ( longitud -- )
+			DIScr
+			#01 SUS DUP ?&>relleno
+		&>llenar ( longitud i -- )
+			YNBc DUP2r ?{ RET2r ONB2cr } DISr DIScr
+			INC SUMc ,&tamaño CAR MEQ ?&>llenar
+		RET2 SOB2r DISr
+		#01 SUS INCc ?&>vertical
+	RET RET2r RET2r INT
