@@ -1,10 +1,17 @@
 # Kvara
 
-Kvara is an assembler with i18n (internationalization) support for the Varvara/Uxn ecosystem forked from the reference assembler uxnasm implemented in C.
+Kvara is an assembler with i18n (internationalization) support for the 
+Varvara/Uxn ecosystem, forked from the reference *uxnasm* assembler implemented
+in C.
 
-- **kvara** means fourth in Esperanto.
-- **kvara** rhymes with varvara.
-- **kvara** is the fourth uxntal assembler I have used, the others are: *uxnasm*, *asma* and *drifblim*.
+### What is the meaning of *Kvara*?
+
+- **Kvara** means *fourth* in Esperanto.
+- **Kvara** rhymes with Uxn's *Varvara*.
+- **Kvara** is the fourth Uxntal assembler that I have used, the others were:
+  *uxnasm*, *asma* and *drifblim*.
+- **Kvara** is also a reference to the *Forth* programming langauge, which led
+  me to the Uxn ecosystem.
 
 ### Supported Languages
 
@@ -16,8 +23,8 @@ Kvara is an assembler with i18n (internationalization) support for the Varvara/U
 ## Build
 
 ```bash
-$ make      # All versions.
-$ make en   # English version.
+$ make      # English version.
+$ make all  # All versions.
 $ make es   # Spanish version.
 $ make eo   # Esperanto version.
 $ make tok  # Toki pona version.
@@ -26,26 +33,46 @@ $ make tok  # Toki pona version.
 ## Usage
 
 ```bash
-$ kvrasm[-es|-eo|-tok] input.kvr[es|eo|tok] output.rom
+$ kvrasm[-es|-eo|-tok] input.kvr[es|eo|tok] [output.rom]
 ```
 
 ## Test
 
 ```bash
-$ make test      # Test all versions.
-$ make test-en   # Test English version.
+$ make test      # Test English version.
+$ make test-all  # Test all versions.
 $ make test-es   # Test Spanish version.
 $ make test-eo   # Test Esperanto version.
 $ make test-tok  # Test Toki pona version.
+```
 
+## Install
+
+```bash
+$ make install      # Install English version.
+$ make install-all  # Install all versions.
+$ make install-es   # Install Spanish version.
+$ make install-eo   # Install Esperanto version.
+$ make install-tok  # Install Toki pona version.
+```
+
+The executables are installed at `~/bin`, make sure that this directory is in 
+your `PATH` and that you have sourced your shell configuration file, for example 
+`~/.bashrc` or start a new shell session for Kvara assembler(s) to be available
+from any directory.
+
+```bash
+$ make install
+$ echo "export PATH=$PATH:~/bin" >> ~/.bashrc
+$ source ~/.bashrc
 ```
 
 ## Differences From Uxnasm
 
-- Kvara supports `\ comment` (backslash+space) Forth style comments, these are not 
-  part of the Uxntal specification which only support `( comment )` 
-  (there must whitespace after the opening `( ` and closing ` )` parenthesis) 
-  Forth style comments. 
+- Kvara supports `\ comment` backslash space Forth style comments, these are 
+  not part of the Uxntal specification which only supports `( comment )` 
+  parenthesis Forth style comments (there must whitespace after the opening
+  `(` and closing `)` parenthesis). 
 
 ## Utils
 
@@ -56,8 +83,7 @@ $ make test-tok  # Test Toki pona version.
 
 ## TODO
 
-- [ ] Make `kvr2tal.py` better.
-- [ ] Make `tal2kvr.py`.
-- [ ] Explain how to contribute and add a new language.
-- [ ] Implement another utility to scafold and make easier adding new languages.
-- [ ] Use the opcode test for all languages.
+- [] Implement `kvrptr` (Kvara porter).
+- [] Explain how to contribute and add a new language.
+- [] Implement another utility to scafold and make easier adding new languages.
+- [] Use the opcode test for all languages.
