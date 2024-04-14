@@ -1,14 +1,14 @@
 # thanks to makeworld for new instructions and multiline comment support
 
-filetype: kvrtal-es
+filetype: kvrtal-tok
 
 detect:
-  filename: "\\.(tales|kvres|uxnes|kvrtales|uxntales)$"
+  filename: "\\.(taltok|kvrtok|uxntok|kvrtaltok|uxntaltok)$"
 
 rules:
   - identifier: "[@,;.&][^\ \n\r]+"
   - constant: "[\"#'|$][^\ \n\r]+"
-  - statement: "\\b(INT|LIT|INC|RET|COR|CAM|ROT|DUP|SOB|IGU|NIG|MAQ|MEQ|SAL|SCN|SRR|RES|CAC|GUC|CAR|GUR|CAA|GUA|DIE|DIS|SUM|SUS|MUL|DIV|YNB|ONB|OEX|DES)[2cr]{0,3}\\b"
+  - statement: "\\b(PIN|NAN|MUT|WEK|WKP|ANT|SIK|KIN|KNP|SAM|ALA|SEW|LIL|TAW|TWK|TWP|POK|LKL|STL|LKP|STP|LUK|SIT|KUT|TOK|NSI|NWE|NKU|NKI|LAL|LAN|LWA|LTA)[2pa]{0,3}\\b"
   - comment:
       start: "\\(\\ "
       end: "\\ \\)"

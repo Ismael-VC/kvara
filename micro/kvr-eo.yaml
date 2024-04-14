@@ -1,14 +1,14 @@
 # thanks to makeworld for new instructions and multiline comment support
 
-filetype: kvrtal-es
+filetype: kvrtal-eo
 
 detect:
-  filename: "\\.(tales|kvres|uxnes|kvrtales|uxntales)$"
+  filename: "\\.(taleo|kvreo|uxneo|kvrtaleo|uxntaleo)$"
 
 rules:
   - identifier: "[@,;.&][^\ \n\r]+"
   - constant: "[\"#'|$][^\ \n\r]+"
-  - statement: "\\b(INT|LIT|INC|RET|COR|CAM|ROT|DUP|SOB|IGU|NIG|MAQ|MEQ|SAL|SCN|SRR|RES|CAC|GUC|CAR|GUR|CAA|GUA|DIE|DIS|SUM|SUS|MUL|DIV|YNB|ONB|OEX|DES)[2cr]{0,3}\\b"
+  - statement: "\\b(INT|LIT|PGR|RET|FOR|ŜAĜ|ROT|DUP|SUP|EGA|NEG|PGO|MGO|SAL|SKN|SRR|REZ|ŜAN|KON|ŜAR|KOR|ŜAA|KOA|END|ELD|ADI|SUB|MUL|DIV|KBO|ABO|EKA|ŜOV)[2kr]{0,3}\\b"
   - comment:
       start: "\\(\\ "
       end: "\\ \\)"

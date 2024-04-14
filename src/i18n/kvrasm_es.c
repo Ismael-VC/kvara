@@ -65,4 +65,4 @@
 #define ON_RESET "al reiniciar"
 #define KVRASM_KVARA_ASSEMBLER_DATE "kvrasm - Ensamblador Kvara, 12 Abr 2024.\n"
 #define USAGE "uso"
-#define EXAMPLE "kvrasm [-v] entrada.kvr salida.rom"
+#define EXAMPLE "kvrasm-es [-v] entrada.kvres salida.rom"
