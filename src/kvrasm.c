@@ -17,32 +17,32 @@ WITH REGARD TO THIS SOFTWARE.
 
 #define PAGE 0x0100
 
-typedef struct { int line; uint8_t *path; } Context;
-typedef struct { uint8_t *name, rune, *data; uint16_t addr, refs, line; } Item;
+typedef struct { int line; char *path; } Context;
+typedef struct { char *name, rune, *data; uint16_t addr, refs, line; } Item;
 
 static int ptr, length;
-static uint8_t token[0x40], scope[0x40], lambda[0x05];
-static uint8_t dict[0x8000], *dictnext = dict;
+static char token[0x40], scope[0x40], lambda[0x05];
+static char dict[0x8000], *dictnext = dict;
 static uint8_t data[0x10000], lambda_stack[0x100], lambda_ptr, lambda_len;
 static uint16_t labels_len, refs_len, macro_len;
 static Item labels[0x400], refs[0x1000], macros[0x100];
 
-static uint8_t *runes = "|$@&,_.-;=!?#\"%~";
-static uint8_t *hexad = "0123456789abcdef";
-static uint8_t ops[][OPCODE_LENGTH] = {
+static char *runes = "|$@&,_.-;=!?#\"%~";
+static char *hexad = "0123456789abcdef";
+static char ops[][OPCODE_LENGTH] = {
 	LIT, INC, POP, NIP, SWP, ROT, DUP, OVR,
 	EQU, NEQ, GTH, LTH, JMP, JCN, JSR, STH,
 	LDZ, STZ, LDR, STR, LDA, STA, DEI, DEO,
 	ADD, SUB, MUL, DIV, AND, ORA, EOR, SFT
 };
 
-static int   find(uint8_t *s, uint8_t t) { int i = 0; uint8_t c; while((c = *s++)) { if(c == t) return i; i++; } return -1; }
-static int   shex(uint8_t *s) { int d, n = 0; uint8_t c; while((c = *s++)) { d = find(hexad, c); if(d < 0) return d; n = n << 4, n |= d; } return n; }
-static int   scmp(uint8_t *a, uint8_t *b, int len) { int i = 0; while(a[i] == b[i]) if(!a[i] || ++i >= len) return 1; return 0; }
+static int   find(char *s, char t) { int i = 0; char c; while((c = *s++)) { if(c == t) return i; i++; } return -1; }
+static int   shex(char *s) { int d, n = 0; char c; while((c = *s++)) { d = find(hexad, c); if(d < 0) return d; n = n << 4, n |= d; } return n; }
+static int   scmp(char *a, char *b, int len) { int i = 0; while(a[i] == b[i]) if(!a[i] || ++i >= len) return 1; return 0; }
 static int   slen(char *a) { int i = 0; while (a[i]) i++; return i; }
-static uint8_t *copy(uint8_t *src, uint8_t *dst, uint8_t c) { while(*src && *src != c) *dst++ = *src++; *dst++ = 0; return dst; }
-static uint8_t *save(uint8_t *s, uint8_t c) { uint8_t *o = dictnext; while((*dictnext++ = *s++) && *s); *dictnext++ = c; return o; }
-static uint8_t *join(uint8_t *a, uint8_t j, uint8_t *b) { uint8_t *res = dictnext; save(a, j), save(b, 0); return res; }
+static char *copy(char *src, char *dst, char c) { while(*src && *src != c) *dst++ = *src++; *dst++ = 0; return dst; }
+static char *save(char *s, char c) { char *o = dictnext; while((*dictnext++ = *s++) && *s); *dictnext++ = c; return o; }
+static char *join(char *a, char j, char *b) { char *res = dictnext; save(a, j), save(b, 0); return res; }
 
 #define ishex(x) (shex(x) >= 0)
 #define isopc(x) (findopcode(x) || scmp(x, BRK, OPCODE_LENGTH))
@@ -56,19 +56,19 @@ static uint8_t *join(uint8_t *a, uint8_t j, uint8_t *b) { uint8_t *res = dictnex
 
 /* clang-format on */
 
-static int parse(uint8_t *w, FILE *f, Context *ctx);
+static int parse(char *w, FILE *f, Context *ctx);
 
-static uint8_t * push(uint8_t *s, uint8_t c) {
-	uint8_t *d = dict;
+static char * push(char *s, char c) {
+	char *d = dict;
 	for(d = dict; d < dictnext; d++) {
-		uint8_t *ss = s, *dd = d, a, b;
+		char *ss = s, *dd = d, a, b;
 		while((a = *dd++) == (b = *ss++))
 			if(!a && !b) return d;
 	}
 	return save(s, c);
 }
 
-static Item * finditem(uint8_t *name, Item *list, int len) {
+static Item * finditem(char *name, Item *list, int len) {
 	int i;
 	if(name[0] == '&')
 		name = join(scope, '/', name + 1);
@@ -78,7 +78,7 @@ static Item * finditem(uint8_t *name, Item *list, int len) {
 	return NULL;
 }
 
-static uint8_t findopcode(uint8_t *s) {
+static uint8_t findopcode(char *s) {
 	int i;
 	for(i = 0; i < 0x20; i++) {
 		int m = slen(ops[i]); 
@@ -101,7 +101,7 @@ static uint8_t findopcode(uint8_t *s) {
 }
 
 static int walkcomment(FILE *f, Context *ctx) {
-	uint8_t c;
+	char c;
 	int depth = 1;
 	while(f && fread(&c, 1, 1, f)) {
 		if(c == 0xa) ctx->line++;
@@ -112,9 +112,9 @@ static int walkcomment(FILE *f, Context *ctx) {
 }
 
 static int walkmacro(Item *m, Context *ctx) {
-	uint8_t c, *dataptr = m->data, *cptr = token;
+	char c, *dataptr = m->data, *cptr = token;
 	while((c = *dataptr++)) {
-		if(c < 0x21) {
+		if((uint8_t) c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, NULL, ctx)) return 0;
 			cptr = token;
@@ -125,7 +125,7 @@ static int walkmacro(Item *m, Context *ctx) {
 }
 
 static int walkfile(FILE *f, Context *ctx) {
-	uint8_t c, *cptr = token;
+	char c, *cptr = token;
 	int incomment = 0, backslash = 0;
 	while(f && fread(&c, 1, 1, f)) {
 		if(backslash && c != 0x20) backslash = 0;
@@ -134,7 +134,7 @@ static int walkfile(FILE *f, Context *ctx) {
 		else if (incomment) continue;
 		if(backslash && c == 0x20) {*cptr-- = 0, incomment = 1, backslash = 0; continue;}
 		if(c == '\\') backslash = 1;
-		if(c < 0x21) {
+		if((uint8_t) c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, f, ctx)) return 0;
 			cptr = token;
@@ -147,7 +147,7 @@ static int walkfile(FILE *f, Context *ctx) {
 	return parse(token, f, ctx);
 }
 
-static uint8_t * makelambda(int id) {
+static char * makelambda(int id) {
 	lambda[0] = (uint8_t)0xce;
 	lambda[1] = (uint8_t)0xbb;
 	lambda[2] = hexad[id >> 0x4];
@@ -155,9 +155,9 @@ static uint8_t * makelambda(int id) {
 	return lambda;
 }
 
-static int makemacro(uint8_t *name, FILE *f, Context *ctx) {
+static int makemacro(char *name, FILE *f, Context *ctx) {
 	int depth = 0;
-	uint8_t c;
+	char c;
 	Item *m;
 	if(macro_len >= 0x100) return error_asm(MACROS_LIMIT_EXCEEDED);
 	if(isinvalid(name)) return error_asm(MACRO_IS_INVALID);
@@ -181,7 +181,7 @@ static int makemacro(uint8_t *name, FILE *f, Context *ctx) {
 	return 1;
 }
 
-static int makelabel(uint8_t *name, int setscope, Context *ctx) {
+static int makelabel(char *name, int setscope, Context *ctx) {
 	Item *l;
 	if(name[0] == '&')
 		name = join(scope, '/', name + 1);
@@ -196,7 +196,7 @@ static int makelabel(uint8_t *name, int setscope, Context *ctx) {
 	return 1;
 }
 
-static int makeref(uint8_t *label, uint8_t rune, uint16_t addr, Context *ctx) {
+static int makeref(char *label, char rune, uint16_t addr, Context *ctx) {
 	Item *r;
 	if(refs_len >= 0x1000) return error_asm(REFERENCES_LIMIT_EXCEEDED);
 	r = &refs[refs_len++];
@@ -214,7 +214,7 @@ static int makeref(uint8_t *label, uint8_t rune, uint16_t addr, Context *ctx) {
 	return 1;
 }
 
-static int writepad(uint8_t *w, Context *ctx) {
+static int writepad(char *w, Context *ctx) {
 	Item *l;
 	int rel = w[0] == '$' ? ptr : 0;
 	if(ishex(w + 1)) {
@@ -241,7 +241,7 @@ static int writebyte(uint8_t b, Context *ctx) {
 	return 1;
 }
 
-static int writehex(uint8_t *w, Context *ctx) {
+static int writehex(char *w, Context *ctx) {
 	if(*w == '#')
 		writebyte(findopcode(LIT) | !!(++w)[2] << 5, ctx);
 	if(w[1] && !w[2])
@@ -252,14 +252,14 @@ static int writehex(uint8_t *w, Context *ctx) {
 		return error_asm(HEXADECIMAL_INVALID);
 }
 
-static int writestring(uint8_t *w, Context *ctx) {
-	uint8_t c;
+static int writestring(char *w, Context *ctx) {
+	char c;
 	while((c = *(w++)))
 		if(!writebyte(c, ctx)) return error_asm(STRING_INVALID);
 	return 1;
 }
 
-static int assemble(uint8_t *filename) {
+static int assemble(char *filename) {
 	FILE *f;
 	int res = 0;
 	Context ctx;
@@ -272,7 +272,7 @@ static int assemble(uint8_t *filename) {
 	return res;
 }
 
-static int parse(uint8_t *w, FILE *f, Context *ctx) {
+static int parse(char *w, FILE *f, Context *ctx) {
 	Item *m;
 	switch(w[0]) {
 	case 0x0: return 1;
@@ -304,7 +304,7 @@ static int parse(uint8_t *w, FILE *f, Context *ctx) {
 	return makeref(w, ' ', ptr + 1, ctx) && writebyte(0x60, ctx) && writeshort(0xffff);
 }
 
-static int resolve(uint8_t *filename) {
+static int resolve(char *filename) {
 	int i, rel;
 	if(!length) return error_top(OUTPUT_EMPTY, filename);
 	for(i = 0; i < refs_len; i++) {
@@ -339,10 +339,10 @@ static int resolve(uint8_t *filename) {
 	return 1;
 }
 
-static int build(uint8_t *rompath) {
+static int build(char *rompath) {
 	int i;
 	FILE *dst, *dstsym;
-	uint8_t *sympath = join(rompath, '.', "sym");
+	char *sympath = join(rompath, '.', "sym");
 	/* rom */
 	if(!(dst = fopen(rompath, "wb")))
 		return !error_top(OUTPUT_FILE_INVALID, rompath);
@@ -362,7 +362,7 @@ static int build(uint8_t *rompath) {
 		return !error_top(SYMBOLS_FILE_INVALID, sympath);
 	for(i = 0; i < labels_len; i++) {
 		uint8_t hb = labels[i].addr >> 8, lb = labels[i].addr;
-		uint8_t c, d = 0, *name = labels[i].name;
+		char c, d = 0, *name = labels[i].name;
 		fwrite(&hb, 1, 1, dstsym);
 		fwrite(&lb, 1, 1, dstsym);
 		while((c = *name++)) fwrite(&c, 1, 1, dstsym);
@@ -372,7 +372,7 @@ static int build(uint8_t *rompath) {
 	return 1;
 }
 
-int main(int argc, uint8_t *argv[]) {
+int main(int argc, char *argv[]) {
 	ptr = PAGE;
 	copy(ON_RESET, scope, 0);
 	if(argc == 2 && scmp(argv[1], "-v", 2)) return !printf(KVRASM_KVARA_ASSEMBLER_DATE);
