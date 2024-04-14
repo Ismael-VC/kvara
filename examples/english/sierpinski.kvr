@@ -1,4 +1,4 @@
-( uxncli sierpinski.rom )
+\ $ kvrasm sierpinski.kvr sierpinski.rom && uxncli sierpinski.rom
 
 @sierpinski ( -> )
 	( mask ) [ LIT2r 0a18 ] [ LIT2r 2018 ] 

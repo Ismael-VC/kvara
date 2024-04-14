@@ -1,4 +1,4 @@
-( kvrasm-eo sierpinski.kvreo sierpinski-eo.rom && uxncli sierpinski-eo.rom )
+\ kvrasm-eo sierpinski.kvreo sierpinski.rom && uxncli sierpinski.rom
 
 @sierpinski ( -> )
 	( masko ) [ LIT2r 0a18 ] [ LIT2r 2018 ] 

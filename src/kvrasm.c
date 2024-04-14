@@ -10,21 +10,23 @@ WITH REGARD TO THIS SOFTWARE.
 */
 
 #include <stdio.h>
-#include <stdint.h>
 #include "i18n/kvrasm_i18n.c"
 
 /* clang-format off */
 
 #define PAGE 0x0100
 
+typedef unsigned char Uint8;
+typedef signed char Sint8;
+typedef unsigned short Uint16;
 typedef struct { int line; char *path; } Context;
-typedef struct { char *name, rune, *data; uint16_t addr, refs, line; } Item;
+typedef struct { char *name, rune, *data; Uint16 addr, refs, line; } Item;
 
 static int ptr, length;
 static char token[0x40], scope[0x40], lambda[0x05];
 static char dict[0x8000], *dictnext = dict;
-static uint8_t data[0x10000], lambda_stack[0x100], lambda_ptr, lambda_len;
-static uint16_t labels_len, refs_len, macro_len;
+static Uint8 data[0x10000], lambda_stack[0x100], lambda_ptr, lambda_len;
+static Uint16 labels_len, refs_len, macro_len;
 static Item labels[0x400], refs[0x1000], macros[0x100];
 
 static char *runes = "|$@&,_.-;=!?#\"%~";
@@ -78,7 +80,7 @@ static Item * finditem(char *name, Item *list, int len) {
 	return NULL;
 }
 
-static uint8_t findopcode(char *s) {
+static Uint8 findopcode(char *s) {
 	int i;
 	for(i = 0; i < 0x20; i++) {
 		int m = slen(ops[i]); 
@@ -112,9 +114,10 @@ static int walkcomment(FILE *f, Context *ctx) {
 }
 
 static int walkmacro(Item *m, Context *ctx) {
-	char c, *dataptr = m->data, *cptr = token;
+	unsigned char c;
+	char *dataptr = m->data, *cptr = token;
 	while((c = *dataptr++)) {
-		if((uint8_t) c < 0x21) {
+		if(c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, NULL, ctx)) return 0;
 			cptr = token;
@@ -125,7 +128,8 @@ static int walkmacro(Item *m, Context *ctx) {
 }
 
 static int walkfile(FILE *f, Context *ctx) {
-	char c, *cptr = token;
+	unsigned char c;
+	char *cptr = token;
 	int incomment = 0, backslash = 0;
 	while(f && fread(&c, 1, 1, f)) {
 		if(backslash && c != 0x20) backslash = 0;
@@ -134,7 +138,7 @@ static int walkfile(FILE *f, Context *ctx) {
 		else if (incomment) continue;
 		if(backslash && c == 0x20) {*cptr-- = 0, incomment = 1, backslash = 0; continue;}
 		if(c == '\\') backslash = 1;
-		if((uint8_t) c < 0x21) {
+		if(c < 0x21) {
 			*cptr++ = 0x00;
 			if(token[0] && !parse(token, f, ctx)) return 0;
 			cptr = token;
@@ -148,8 +152,8 @@ static int walkfile(FILE *f, Context *ctx) {
 }
 
 static char * makelambda(int id) {
-	lambda[0] = (uint8_t)0xce;
-	lambda[1] = (uint8_t)0xbb;
+	lambda[0] = (char)0xce;
+	lambda[1] = (char)0xbb;
 	lambda[2] = hexad[id >> 0x4];
 	lambda[3] = hexad[id & 0xf];
 	return lambda;
@@ -196,7 +200,7 @@ static int makelabel(char *name, int setscope, Context *ctx) {
 	return 1;
 }
 
-static int makeref(char *label, char rune, uint16_t addr, Context *ctx) {
+static int makeref(char *label, char rune, Uint16 addr, Context *ctx) {
 	Item *r;
 	if(refs_len >= 0x1000) return error_asm(REFERENCES_LIMIT_EXCEEDED);
 	r = &refs[refs_len++];
@@ -228,7 +232,7 @@ static int writepad(char *w, Context *ctx) {
 	return error_asm(PADDING_INVALID);
 }
 
-static int writebyte(uint8_t b, Context *ctx) {
+static int writebyte(Uint8 b, Context *ctx) {
 	if(ptr < PAGE)
 		return error_asm(WRITING_ZERO_PAGE);
 	else if(ptr >= 0x10000)
@@ -309,13 +313,13 @@ static int resolve(char *filename) {
 	if(!length) return error_top(OUTPUT_EMPTY, filename);
 	for(i = 0; i < refs_len; i++) {
 		Item *r = &refs[i], *l = findlabel(r->name);
-		uint8_t *rom = data + r->addr;
+		Uint8 *rom = data + r->addr;
 		if(!l) return error_ref(LABEL_UNKNOWN);
 		switch(r->rune) {
 		case '_':
 		case ',':
 			*rom = rel = l->addr - r->addr - 2;
-			if((int8_t)data[r->addr] != rel)
+			if((Sint8)data[r->addr] != rel)
 				return error_ref(RELATIVE_REFERENCE_TOO_FAR);
 			break;
 		case '-':
@@ -361,7 +365,7 @@ static int build(char *rompath) {
 	if(!(dstsym = fopen(sympath, "w")))
 		return !error_top(SYMBOLS_FILE_INVALID, sympath);
 	for(i = 0; i < labels_len; i++) {
-		uint8_t hb = labels[i].addr >> 8, lb = labels[i].addr;
+		Uint8 hb = labels[i].addr >> 8, lb = labels[i].addr;
 		char c, d = 0, *name = labels[i].name;
 		fwrite(&hb, 1, 1, dstsym);
 		fwrite(&lb, 1, 1, dstsym);

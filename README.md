@@ -15,31 +15,49 @@ Kvara is an assembler with i18n (internationalization) support for the Varvara/U
 
 ## Build
 
-```console
-$ gcc src/kvrasm.c -o bin/kvrasm                  # Build with default language (English)
-$ gcc src/kvrasm.c -o bin/kvrasm-es -D LANG_ES    # Spanish version.
-$ gcc src/kvrasm.c -o bin/kvrasm-eo -D LANG_EO    # Esperanto version.
-$ gcc src/kvrasm.c -o bin/kvrasm-tok -D LANG_TOK  # Toki pona version.
+```bash
+$ make      # All versions.
+$ make en   # English version.
+$ make es   # Spanish version.
+$ make eo   # Esperanto version.
+$ make tok  # Toki pona version.
 ```
 
 ## Usage
 
-```console
-$ bin/kvrasm examples/english/sierpinski.kvr roms/sierpinski.rom
-$ bin/kvrasm-es examples/spanish/sierpinski.kvres roms/sierpinski-es.rom
-$ bin/kvrasm-eo examples/esperanto/sierpinski.kvreo roms/sierpinski-eo.rom
-$ bin/kvrasm-tok examples/toki-pona/sierpinski.kvrtok roms/sierpinski-tok.rom
+```bash
+$ kvrasm[-es|-eo|-tok] input.kvr[es|eo|tok] output.rom
 ```
 
 ## Test
 
-```console
-$ uxncli roms/sierpinski.rom
-$ uxncli roms/sierpinski-es.rom
-$ uxncli roms/sierpinski-eo.rom
-$ uxncli roms/sierpinski-tok.rom
+```bash
+$ make test      # Test all versions.
+$ make test-en   # Test English version.
+$ make test-es   # Test Spanish version.
+$ make test-eo   # Test Esperanto version.
+$ make test-tok  # Test Toki pona version.
+
 ```
+
+## Differences From Uxnasm
+
+- Kvara supports `\ comment` (backslash+space) Forth style comments, these are not 
+  part of the Uxntal specification which only support `( comment )` 
+  (there must whitespace after the opening `( ` and closing ` )` parenthesis) 
+  Forth style comments. 
+
+## Utils
+
+- In order to offer full compatibility with other standard Uxntal assemblers,
+  ease porting standard Uxntal to a supported Kvara language and also porting
+  from one supported kvara language to another there is the *Kvara porter* at
+  `utils/kvrprt`.
 
 ## TODO
 
+- [ ] Make `kvr2tal.py` better.
+- [ ] Make `tal2kvr.py`.
+- [ ] Explain how to contribute and add a new language.
+- [ ] Implement another utility to scafold and make easier adding new languages.
 - [ ] Use the opcode test for all languages.

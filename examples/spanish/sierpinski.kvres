@@ -1,4 +1,4 @@
-( kvrasm-es sierpinski.kvres sierpinski.rom && uxncli sierpinski.rom )
+\ kvrasm-es sierpinski.kvres sierpinski.rom && uxncli sierpinski.rom
 
 @sierpinski ( -> )
 	( máscara ) [ LIT2r 0a18 ] [ LIT2r 2018 ]

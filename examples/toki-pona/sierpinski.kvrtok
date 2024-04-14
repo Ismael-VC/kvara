@@ -1,4 +1,4 @@
-( kvrasm-tok sierpinski.kvrtok sierpinski-tok.rom && uxncli sierpinski-tok.rom )
+\ kvrasm-tok sierpinski.kvrtok sierpinski.rom && uxncli sierpinski.rom
 
 @sierpinski ( -> )
 	( len ) [ NAN2p 0a18 ] [ NAN2p 2018 ] 
