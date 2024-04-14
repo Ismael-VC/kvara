@@ -1,4 +1,6 @@
-# Kvara
+# Kvara 
+
+![example workflow](https://github.com/Ismael-VC/kvara/actions/workflows/kvara-ci.yml/badge.svg)
 
 Kvara is an assembler with i18n (internationalization) support for the 
 Varvara/Uxn ecosystem, forked from the reference *uxnasm* assembler implemented
