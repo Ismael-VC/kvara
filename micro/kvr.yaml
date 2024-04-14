@@ -1,9 +1,9 @@
 # thanks to makeworld for new instructions and multiline comment support
 
-filetype: kvrtal
+filetype: kvrtal-en
 
 detect:
-  filename: "\\.(tal|kvr|uxn|kvrtal|uxntal)$"
+  filename: "\\.(talen|kvr|kvren|uxnen|kvrtalen|uxntalen)$"
 
 rules:
   - identifier: "[@,;.&][^\ \n\r]+"
