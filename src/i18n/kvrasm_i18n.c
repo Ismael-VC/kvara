@@ -1,4 +1,5 @@
 // Default kvrasm assembler English strings.
+#define OPCODE_LENGTH 4
 #define BRK "BRK"
 #define LIT "LIT"
 #define LIT2 "LIT2"
