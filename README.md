@@ -95,6 +95,7 @@ $ kvrprt source.tal  lang  # Creates: source.kvr{lang}
 - [x] Implement `kvrptr` (Kvara porter).
 - [ ] Explain how to contribute and add a new language.
 - [ ] Implement another utility to scafold and make easier adding new languages.
-- [ ] Use the opcode test for all languages.
+- [x] Use the opcode test for all languages.
+- [ ] Improve opcode tests.
 - [ ] If no output file name is given, by default use the input file name and
       save rom to the current working directory.
