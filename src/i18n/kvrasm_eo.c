@@ -29,9 +29,9 @@
 #define SUB "SUB"  // subtrahi
 #define MUL "MUL"  // multipliki
 #define DIV "DIV"  // dividi
-#define AND "KBO"  // kaj bitope
-#define ORA "ABO"  // aŭ bitope
-#define EOR "EKA"  // ekskluziva aŭ
+#define AND "KBO"  // KAJ bitope
+#define ORA "ABO"  // AŬ bitope
+#define EOR "EKA"  // ekskluziva AŬ
 #define SFT "ŜOV"  // ŝovi
 #define ERROR_ASM "%s: %s ĉe @%s, %s:%d.\n"
 #define RETURN_MODE 'r'  // reveni

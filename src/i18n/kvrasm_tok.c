@@ -32,9 +32,9 @@
 #define SUB "NWE" // nanpa weka
 #define MUL "NKU" // nanpa kulupu
 #define DIV "NKI" // nanpa kipisi
-#define AND "LAL" // lili ale
-#define ORA "LAN" // lili anu
-#define EOR "LWA" // lili wan
+#define AND "LAL" // lili ALE
+#define ORA "LAN" // lili ANU
+#define EOR "LWA" // lili WAN
 #define SFT "LTA" // lili tawa
 #define ERROR_ASM "%s: %s in @%s, %s:%d.\n"
 #define RETURN_MODE 'p' // poki

@@ -15,7 +15,7 @@
 #define LTH "MEQ"  // menor que
 #define JMP "SAL"  // saltar
 #define JCN "SCN"  // saltar condicionalmente
-#define JSR "SRR"  // saltar reservar retorno
+#define JSR "SRR"  // saltar reservar regreso
 #define STH "RES"  // reservar
 #define LDZ "CAC"  // cargar cero (página) 
 #define STZ "GUC"  // guardar cero (página)
@@ -31,7 +31,7 @@
 #define DIV "DIV"  // dividir
 #define AND "YNB"  // y a nivel de bits
 #define ORA "ONB"  // o a nivel de bits
-#define EOR "OEX"  // o exclusivo
+#define EOR "OEX"  // o a nivel de bits exclusivo
 #define SFT "DES"  // desplazar
 #define ERROR_ASM "%s: %s en @%s, %s:%d.\n"
 #define RETURN_MODE 'r'  // regreso
