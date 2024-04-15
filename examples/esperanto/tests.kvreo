@@ -1,0 +1,464 @@
+\ Opcode Tester 
+
+\ Requirements: 
+\    EGA/EGA2 should put #00 or #01 on the stack
+\    #18 ELD should output ascii character to console 
+
+%EMIT { #18 ELD }
+%TEST-SHORT { EGA2 #30 ADI EMIT }
+%TEST-BYTE { EGA #30 ADI EMIT }
+%MODE { #20 EMIT }
+%OPCODE { #0a EMIT }
+%TYPE { OPCODE OPCODE }
+
+|0000
+
+	@zeropage 
+		&byte $1 &short $2
+
+|0100
+
+	\ Logic 
+
+	\ EGA 
+	#f8 #f8 EGA [ #01 ] TEST-BYTE
+	#01 #01 EGA [ #01 ] TEST-BYTE
+	#f8 #01 EGA [ #00 ] TEST-BYTE
+	#01 #f8 EGA [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 EGA2 [ #01 ] TEST-BYTE
+	#01f8 #01f8 EGA2 [ #01 ] TEST-BYTE
+	#f801 #01f8 EGA2 [ #00 ] TEST-BYTE
+	#01f8 #f801 EGA2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 EGAk ADI ADI [ #f1 ] TEST-BYTE
+	#01 #01 EGAk ADI ADI [ #03 ] TEST-BYTE
+	#f8 #01 EGAk ADI ADI [ #f9 ] TEST-BYTE
+	#01 #f8 EGAk ADI ADI [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 EGA2k #00 ADI2 ADI2 [ #f102 ] TEST-SHORT
+	#01f8 #01f8 EGA2k #00 ADI2 ADI2 [ #04f0 ] TEST-SHORT
+	#f801 #01f8 EGA2k #00 ADI2 ADI2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 EGA2k #00 ADI2 ADI2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ NEG 
+	#f8 #f8 NEG [ #00 ] TEST-BYTE
+	#01 #01 NEG [ #00 ] TEST-BYTE
+	#f8 #01 NEG [ #01 ] TEST-BYTE
+	#01 #f8 NEG [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 NEG2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 NEG2 [ #00 ] TEST-BYTE
+	#f801 #01f8 NEG2 [ #01 ] TEST-BYTE
+	#01f8 #f801 NEG2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 NEGk ADI ADI [ #f0 ] TEST-BYTE
+	#01 #01 NEGk ADI ADI [ #02 ] TEST-BYTE
+	#f8 #01 NEGk ADI ADI [ #fa ] TEST-BYTE
+	#01 #f8 NEGk ADI ADI [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 NEG2k #00 ADI2 ADI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 NEG2k #00 ADI2 ADI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 NEG2k #00 ADI2 ADI2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 NEG2k #00 ADI2 ADI2 [ #faf9 ] TEST-SHORT
+	OPCODE
+
+	\ PGO 
+	#f8 #f8 PGO [ #00 ] TEST-BYTE
+	#01 #01 PGO [ #00 ] TEST-BYTE
+	#f8 #01 PGO [ #01 ] TEST-BYTE
+	#01 #f8 PGO [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 PGO2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 PGO2 [ #00 ] TEST-BYTE
+	#f801 #01f8 PGO2 [ #01 ] TEST-BYTE
+	#01f8 #f801 PGO2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 PGOk ADI ADI [ #f0 ] TEST-BYTE
+	#01 #01 PGOk ADI ADI [ #02 ] TEST-BYTE
+	#f8 #01 PGOk ADI ADI [ #fa ] TEST-BYTE
+	#01 #f8 PGOk ADI ADI [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 PGO2k #00 ADI2 ADI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 PGO2k #00 ADI2 ADI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 PGO2k #00 ADI2 ADI2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 PGO2k #00 ADI2 ADI2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ MGO 
+	#f8 #f8 MGO [ #00 ] TEST-BYTE
+	#01 #01 MGO [ #00 ] TEST-BYTE
+	#f8 #01 MGO [ #00 ] TEST-BYTE
+	#01 #f8 MGO [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 MGO2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 MGO2 [ #00 ] TEST-BYTE
+	#f801 #01f8 MGO2 [ #00 ] TEST-BYTE
+	#01f8 #f801 MGO2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 MGOk ADI ADI [ #f0 ] TEST-BYTE
+	#01 #01 MGOk ADI ADI [ #02 ] TEST-BYTE
+	#f8 #01 MGOk ADI ADI [ #f9 ] TEST-BYTE
+	#01 #f8 MGOk ADI ADI [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 MGO2k #00 ADI2 ADI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 MGO2k #00 ADI2 ADI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 MGO2k #00 ADI2 ADI2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 MGO2k #00 ADI2 ADI2 [ #faf9 ] TEST-SHORT
+	TYPE
+
+	\ Arithmetic 
+
+	\ ADI 
+	#ff #00 ADI [ #ff ] TEST-BYTE
+	#01 #ff ADI [ #00 ] TEST-BYTE
+	#ff #ff ADI [ #fe ] TEST-BYTE
+	#fe #ff ADI [ #fd ] TEST-BYTE
+	MODE
+	#ffff #0000 ADI2 [ #ffff ] TEST-SHORT
+	#0001 #ffff ADI2 [ #0000 ] TEST-SHORT
+	#ffff #ffff ADI2 [ #fffe ] TEST-SHORT
+	#fffe #ffff ADI2 [ #fffd ] TEST-SHORT
+	MODE
+	#ff #00 ADIk ADI ADI [ #fe ] TEST-BYTE
+	#01 #ff ADIk ADI ADI [ #00 ] TEST-BYTE
+	#ff #ff ADIk ADI ADI [ #fc ] TEST-BYTE
+	#fe #ff ADIk ADI ADI [ #fa ] TEST-BYTE
+	MODE
+	#ffff #0000 ADI2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#0001 #ffff ADI2k ADI2 ADI2 [ #0000 ] TEST-SHORT
+	#ffff #ffff ADI2k ADI2 ADI2 [ #fffc ] TEST-SHORT
+	#fffe #ffff ADI2k ADI2 ADI2 [ #fffa ] TEST-SHORT
+	OPCODE
+
+	\ SUB 
+	#ff #00 SUB [ #ff ] TEST-BYTE
+	#01 #ff SUB [ #02 ] TEST-BYTE
+	#ff #ff SUB [ #00 ] TEST-BYTE
+	#fe #ff SUB [ #ff ] TEST-BYTE
+	MODE
+	#ffff #0000 SUB2 [ #ffff ] TEST-SHORT
+	#0001 #ffff SUB2 [ #0002 ] TEST-SHORT
+	#ffff #ffff SUB2 [ #0000 ] TEST-SHORT
+	#fffe #ffff SUB2 [ #ffff ] TEST-SHORT
+	MODE
+	#ff #00 SUBk ADI ADI [ #fe ] TEST-BYTE
+	#01 #ff SUBk ADI ADI [ #02 ] TEST-BYTE
+	#ff #ff SUBk ADI ADI [ #fe ] TEST-BYTE
+	#fe #ff SUBk ADI ADI [ #fc ] TEST-BYTE
+	MODE
+	#ffff #0000 SUB2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#0001 #ffff SUB2k ADI2 ADI2 [ #0002 ] TEST-SHORT
+	#ffff #ffff SUB2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#fffe #ffff SUB2k ADI2 ADI2 [ #fffc ] TEST-SHORT
+	OPCODE
+
+	\ MUL 
+	#00 #01 MUL [ #00 ] TEST-BYTE
+	#3f #e7 MUL [ #d9 ] TEST-BYTE
+	#37 #3f MUL [ #89 ] TEST-BYTE
+	#10 #02 MUL [ #20 ] TEST-BYTE
+	MODE
+	#1000 #0003 MUL2 [ #3000 ] TEST-SHORT
+	#abcd #1234 MUL2 [ #4fa4 ] TEST-SHORT
+	#8000 #0200 MUL2 [ #0000 ] TEST-SHORT
+	#2222 #0003 MUL2 [ #6666 ] TEST-SHORT
+	MODE
+	#00 #01 MULk ADI ADI [ #01 ] TEST-BYTE
+	#3f #e7 MULk ADI ADI [ #ff ] TEST-BYTE
+	#37 #3f MULk ADI ADI [ #ff ] TEST-BYTE
+	#10 #02 MULk ADI ADI [ #32 ] TEST-BYTE
+	MODE
+	#1000 #0003 MUL2k ADI2 ADI2 [ #4003 ] TEST-SHORT
+	#abcd #1234 MUL2k ADI2 ADI2 [ #0da5 ] TEST-SHORT
+	#8000 #0200 MUL2k ADI2 ADI2 [ #8200 ] TEST-SHORT
+	#2222 #0003 MUL2k ADI2 ADI2 [ #888b ] TEST-SHORT
+	OPCODE
+
+	\ DIV 
+	#10 #02 DIV [ #08 ] TEST-BYTE
+	#20 #20 DIV [ #01 ] TEST-BYTE
+	#34 #01 DIV [ #34 ] TEST-BYTE
+	#02 #ef DIV [ #00 ] TEST-BYTE
+	MODE
+	#1000 #0040 DIV2 [ #0040 ] TEST-SHORT
+	#abcd #1234 DIV2 [ #0009 ] TEST-SHORT
+	#8000 #0200 DIV2 [ #0040 ] TEST-SHORT
+	#2222 #0003 DIV2 [ #0b60 ] TEST-SHORT
+	MODE
+	#10 #02 DIVk ADI ADI [ #1a ] TEST-BYTE
+	#20 #20 DIVk ADI ADI [ #41 ] TEST-BYTE
+	#34 #01 DIVk ADI ADI [ #69 ] TEST-BYTE
+	#02 #ef DIVk ADI ADI [ #f1 ] TEST-BYTE
+	MODE
+	#1000 #0040 DIV2k ADI2 ADI2 [ #1080 ] TEST-SHORT
+	#abcd #1234 DIV2k ADI2 ADI2 [ #be0a ] TEST-SHORT
+	#8000 #0200 DIV2k ADI2 ADI2 [ #8240 ] TEST-SHORT
+	#2222 #0003 DIV2k ADI2 ADI2 [ #2d85 ] TEST-SHORT
+	TYPE
+
+	\ Stack 
+
+	\ PGR 
+	#01 PGR [ #02 ] TEST-BYTE
+	#ff PGR [ #00 ] TEST-BYTE
+	#fe PGR [ #ff ] TEST-BYTE
+	#00 PGR [ #01 ] TEST-BYTE
+	MODE
+	#0001 PGR2 [ #0002 ] TEST-SHORT
+	#ffff PGR2 [ #0000 ] TEST-SHORT
+	#fffe PGR2 [ #ffff ] TEST-SHORT
+	#0000 PGR2 [ #0001 ] TEST-SHORT
+	MODE
+	#01 PGRk ADI [ #03 ] TEST-BYTE
+	#ff PGRk ADI [ #ff ] TEST-BYTE
+	#fe PGRk ADI [ #fd ] TEST-BYTE
+	#00 PGRk ADI [ #01 ] TEST-BYTE
+	MODE
+	#0001 PGR2k ADI2 [ #0003 ] TEST-SHORT
+	#ffff PGR2k ADI2 [ #ffff ] TEST-SHORT
+	#fffe PGR2k ADI2 [ #fffd ] TEST-SHORT
+	#0000 PGR2k ADI2 [ #0001 ] TEST-SHORT
+	OPCODE
+
+	\ RET 
+	#0a #0b RET [ #0a ] TEST-BYTE
+	#0a #0b #0c RET RET [ #0a ] TEST-BYTE
+	#0a #0b #0c ADI RET [ #0a ] TEST-BYTE
+	#0a #0b #0c RET ADI [ #15 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f RET2 RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f ADI2 RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f RET2 ADI2 [ #1618 ] TEST-SHORT
+	MODE
+	#0a #0b RETk [ #0b ] TEST-BYTE RET
+	#0a #0b #0c RETk RET [ #0b ] TEST-BYTE RET
+	#0a #0b #0c ADI RETk [ #17 ] TEST-BYTE RET
+	#0a #0b #0c RETk ADI [ #17 ] TEST-BYTE RET
+	MODE
+	#0a0b #0c0d RET2k [ #0c0d ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f RET2k RET2 [ #0c0d ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f ADI2 RET2k [ #1a1c ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f RET2k ADI2 [ #1a1c ] TEST-SHORT RET2
+	OPCODE
+
+	\ DUP 
+	#0a #0b DUP ADI ADI [ #20 ] TEST-BYTE
+	MODE
+	#0a0b DUP2 ADI2 [ #1416 ] TEST-SHORT
+	MODE
+	#0a #0b DUPk ADI ADI ADI [ #2b ] TEST-BYTE
+	MODE
+	#0a0b DUP2k ADI2 ADI2 [ #1e21 ] TEST-SHORT
+	OPCODE
+
+	\ FOR 
+	#12 #34 #56 FOR ADI [ #68 ] TEST-BYTE
+	MODE
+	#1234 #5678 #9abc FOR2 ADI2 [ #acf0 ] TEST-SHORT
+	MODE
+	#12 #34 #56 FORk ADI ADI [ #e0 ] TEST-BYTE RET
+	MODE
+	#1234 #5678 #9abc FOR2k ADI2 ADI2 [ #8bf0 ] TEST-SHORT RET2
+	OPCODE
+
+	\ ŜAĜ 
+	#02 #10 ŜAĜ DIV [ #08 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d ŜAĜ2 FOR2 [ #0a0b ] TEST-SHORT
+	MODE
+	#02 #10 ŜAĜk DIV ADI ADI [ #1a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d ŜAĜ2k RET2 RET2 RET2 [ #0a0b ] TEST-SHORT
+	OPCODE
+
+	\ SUP 
+	#02 #10 SUP DIV ADI [ #0a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d SUP2 FOR2 ADI2 [ #1416 ] TEST-SHORT
+	MODE
+	#02 #10 SUPk DIV ADI ADI ADI [ #1c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d SUP2k FOR2 ADI2 ADI2 ADI2 [ #2a2e ] TEST-SHORT
+	OPCODE
+
+	\ ROT 
+	#02 #04 #10 ROT DIV ADI [ #0c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f ROT2 ADI2 FOR2 [ #161a ] TEST-SHORT
+	MODE
+	#02 #04 #10 ROTk DIV ADI ADI ADI ADI [ #22 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f ROT2k ADI2 FOR2 ADI2 ADI2 ADI2 [ #3841 ] TEST-SHORT
+	TYPE
+
+	\ Bitwise 
+
+	\ KBO 
+	#fc #3f KBO [ #3c ] TEST-BYTE
+	#f0 #0f KBO [ #00 ] TEST-BYTE
+	#ff #3c KBO [ #3c ] TEST-BYTE
+	#02 #03 KBO [ #02 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 KBO2 [ #00f0 ] TEST-SHORT
+	#aaaa #5555 KBO2 [ #0000 ] TEST-SHORT
+	#ffff #1234 KBO2 [ #1234 ] TEST-SHORT
+	#abcd #0a0c KBO2 [ #0a0c ] TEST-SHORT
+	MODE
+	#fc #3f KBOk ADI ADI [ #77 ] TEST-BYTE
+	#f0 #0f KBOk ADI ADI [ #ff ] TEST-BYTE
+	#ff #3c KBOk ADI ADI [ #77 ] TEST-BYTE
+	#02 #03 KBOk ADI ADI [ #07 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 KBO2k ADI2 ADI2 [ #f2d0 ] TEST-SHORT
+	#aaaa #5555 KBO2k ADI2 ADI2 [ #ffff ] TEST-SHORT
+	#ffff #1234 KBO2k ADI2 ADI2 [ #2467 ] TEST-SHORT
+	#abcd #0a0c KBO2k ADI2 ADI2 [ #bfe5 ] TEST-SHORT
+	OPCODE
+
+	\ ABO 
+	#0f #f0 ABO [ #ff ] TEST-BYTE
+	#ab #cd ABO [ #ef ] TEST-BYTE
+	#12 #34 ABO [ #36 ] TEST-BYTE
+	#88 #10 ABO [ #98 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 ABO2 [ #ffff ] TEST-SHORT
+	#abab #cdcd ABO2 [ #efef ] TEST-SHORT
+	#1122 #1234 ABO2 [ #1336 ] TEST-SHORT
+	#8888 #1000 ABO2 [ #9888 ] TEST-SHORT
+	MODE
+	#0f #f0 ABOk ADI ADI [ #fe ] TEST-BYTE
+	#ab #cd ABOk ADI ADI [ #67 ] TEST-BYTE
+	#12 #34 ABOk ADI ADI [ #7c ] TEST-BYTE
+	#88 #10 ABOk ADI ADI [ #30 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 ABO2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#abab #cdcd ABO2k ADI2 ADI2 [ #6967 ] TEST-SHORT
+	#1122 #1234 ABO2k ADI2 ADI2 [ #368c ] TEST-SHORT
+	#8888 #1000 ABO2k ADI2 ADI2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ EKA 
+	#00 #00 EKA [ #00 ] TEST-BYTE
+	#ff #00 EKA [ #ff ] TEST-BYTE
+	#aa #55 EKA [ #ff ] TEST-BYTE
+	#ff #ff EKA [ #00 ] TEST-BYTE
+	MODE
+	#ffff #ff00 EKA2 [ #00ff ] TEST-SHORT
+	#aaaa #5555 EKA2 [ #ffff ] TEST-SHORT
+	#1122 #1234 EKA2 [ #0316 ] TEST-SHORT
+	#8888 #1000 EKA2 [ #9888 ] TEST-SHORT
+	MODE
+	#00 #00 EKAk ADI ADI [ #00 ] TEST-BYTE
+	#ff #00 EKAk ADI ADI [ #fe ] TEST-BYTE
+	#aa #55 EKAk ADI ADI [ #fe ] TEST-BYTE
+	#ff #ff EKAk ADI ADI [ #fe ] TEST-BYTE
+	MODE
+	#ffff #ff00 EKA2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#aaaa #5555 EKA2k ADI2 ADI2 [ #fffe ] TEST-SHORT
+	#1122 #1234 EKA2k ADI2 ADI2 [ #266c ] TEST-SHORT
+	#8888 #1000 EKA2k ADI2 ADI2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ ŜOV 
+	#ff #08 ŜOV [ #00 ] TEST-BYTE
+	#ff #e0 ŜOV [ #00 ] TEST-BYTE
+	#ff #11 ŜOV [ #fe ] TEST-BYTE
+	#ff #12 ŜOV [ #7e ] TEST-BYTE
+	MODE
+	#ffff #01 ŜOV2 [ #7fff ] TEST-SHORT
+	#ffff #70 ŜOV2 [ #ff80 ] TEST-SHORT
+	#ffff #7e ŜOV2 [ #0180 ] TEST-SHORT
+	#ffff #e3 ŜOV2 [ #c000 ] TEST-SHORT
+	MODE
+	#ff #08 ŜOVk ADI ADI [ #07 ] TEST-BYTE
+	#ff #e0 ŜOVk ADI ADI [ #df ] TEST-BYTE
+	#ff #11 ŜOVk ADI ADI [ #0e ] TEST-BYTE
+	#ff #12 ŜOVk ADI ADI [ #8f ] TEST-BYTE
+	MODE
+	#ffff #01 ŜOV2k ROT RET ADI2 [ #7ffe ] TEST-SHORT
+	#ffff #70 ŜOV2k ROT RET ADI2 [ #ff7f ] TEST-SHORT
+	#ffff #7e ŜOV2k ROT RET ADI2 [ #017f ] TEST-SHORT
+	#ffff #e3 ŜOV2k ROT RET ADI2 [ #bfff ] TEST-SHORT
+	TYPE
+
+	\ Memory 
+
+	\ KON/ŜAN 
+	#ab .zeropage/byte KON .zeropage/byte ŜAN [ #ab ] TEST-BYTE
+	#cd .zeropage/byte KON .zeropage/byte ŜAN [ #cd ] TEST-BYTE
+	MODE
+	#1234 .zeropage/short KON2 .zeropage/short ŜAN2 [ #1234 ] TEST-SHORT
+	#5678 .zeropage/short KON2 .zeropage/short ŜAN2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ KOR/ŜAR 
+	[ LIT &before1 $1 ] RET
+	[ LIT2 &before2 $2 ] RET2
+	#22 ,&before1 KOR ,&before1 ŜAR [ #22 ] TEST-BYTE
+	#ef ,&after1 KOR ,&after1 ŜAR [ #ef ] TEST-BYTE
+	MODE
+	#1234 ,&before2 KOR2 ,&before2 ŜAR2 [ #1234 ] TEST-SHORT
+	#5678 ,&after2 KOR2 ,&after2 ŜAR2 [ #5678 ] TEST-SHORT
+	[ LIT &after1 $1 ] RET
+	[ LIT2 &after2 $2 ] RET2
+	OPCODE
+
+	\ KOA/ŜAA 
+	#34 ;absolute/byte KOA ;absolute/byte ŜAA [ #34 ] TEST-BYTE
+	#56 ;absolute/byte KOA ;absolute/byte ŜAA [ #56 ] TEST-BYTE
+	MODE
+	#1234 ;absolute/short KOA2 ;absolute/short ŜAA2 [ #1234 ] TEST-SHORT
+	#5678 ;absolute/short KOA2 ;absolute/short ŜAA2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ END/ELD 
+	LIT "1 EMIT
+	LIT "1 EMIT
+	TYPE
+
+	\ Branching 
+
+	\ SAL 
+	#12 #34 ,&reljmp SAL ŜAĜ &reljmp RET [ #12 ] TEST-BYTE
+	MODE
+	#56 #78 ;&absjmp SAL2 ŜAĜ &absjmp RET [ #56 ] TEST-BYTE
+	OPCODE
+
+	\ SKN 
+	#23 #01 ,&reljcn-y SKN PGR &reljcn-y [ #23 ] TEST-BYTE
+	#23 #00 ,&reljcn-n SKN PGR &reljcn-n [ #24 ] TEST-BYTE
+	MODE
+	#23 #01 ;&absjcn-y SKN2 PGR &absjcn-y [ #23 ] TEST-BYTE
+	#23 #00 ;&absjcn-n SKN2 PGR &absjcn-n [ #24 ] TEST-BYTE
+	OPCODE
+
+	\ SRR - Requires return mode 
+	#12 #34 ;routine SRR2 [ #46 ] TEST-BYTE
+	OPCODE
+
+	\ REZ 
+	#0a REZ #0b REZ ADIr REZr [ #15 ] TEST-BYTE
+	MODE
+	#000a REZ2 #000b REZ2 ADI2r REZ2r [ #0015 ] TEST-SHORT
+	TYPE
+
+	\ Keep 
+	#12 #34 ADIk ADI ADI [ #8c ] TEST-BYTE
+	OPCODE
+
+	#010e ELD
+	#000f ELD
+
+INT
+
+@routine ( a b -- c )
+
+	ADI
+
+SAL2r
+
+@absolute 
+	&byte $1 &short $2

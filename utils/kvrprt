@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from sys import argv
 from re import compile as regex, sub, MULTILINE, findall
 
@@ -127,6 +128,8 @@ LANGS = {
 
 def port_source(lang, source, target = 'en'):
     if lang == 'tal':
+        if target == 'en':
+            sys.exit()
         opcodes = LANGS[target]['opcodes']
         modes = LANGS[target]['modes']
         _, k, r = modes

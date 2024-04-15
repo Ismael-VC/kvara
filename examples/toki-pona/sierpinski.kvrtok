@@ -2,7 +2,7 @@
 
 @sierpinski ( -> )
 	( len ) [ NAN2p 0a18 ] [ NAN2p 2018 ] 
-	( suli ) [ NAN2 &suli 1001 ] NWE
+	( suli ) [ NAN2 &suli 0801 ] NWE
 	&>lipu ( -- )
 		KIN MUTa
 		&>kon ( length -- )

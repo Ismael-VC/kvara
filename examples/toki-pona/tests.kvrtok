@@ -1,0 +1,464 @@
+\ Opcode Tester 
+
+\ Requirements: 
+\    SAM/SAM2 should put #00 or #01 on the stack
+\    #18 TOK should output ascii character to console 
+
+%EMIT { #18 TOK }
+%TEST-SHORT { SAM2 #30 NSI EMIT }
+%TEST-BYTE { SAM #30 NSI EMIT }
+%MODE { #20 EMIT }
+%OPCODE { #0a EMIT }
+%TYPE { OPCODE OPCODE }
+
+|0000
+
+	@zeropage 
+		&byte $1 &short $2
+
+|0100
+
+	\ Logic 
+
+	\ SAM 
+	#f8 #f8 SAM [ #01 ] TEST-BYTE
+	#01 #01 SAM [ #01 ] TEST-BYTE
+	#f8 #01 SAM [ #00 ] TEST-BYTE
+	#01 #f8 SAM [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 SAM2 [ #01 ] TEST-BYTE
+	#01f8 #01f8 SAM2 [ #01 ] TEST-BYTE
+	#f801 #01f8 SAM2 [ #00 ] TEST-BYTE
+	#01f8 #f801 SAM2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 SAMa NSI NSI [ #f1 ] TEST-BYTE
+	#01 #01 SAMa NSI NSI [ #03 ] TEST-BYTE
+	#f8 #01 SAMa NSI NSI [ #f9 ] TEST-BYTE
+	#01 #f8 SAMa NSI NSI [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 SAM2a #00 NSI2 NSI2 [ #f102 ] TEST-SHORT
+	#01f8 #01f8 SAM2a #00 NSI2 NSI2 [ #04f0 ] TEST-SHORT
+	#f801 #01f8 SAM2a #00 NSI2 NSI2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 SAM2a #00 NSI2 NSI2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ ALA 
+	#f8 #f8 ALA [ #00 ] TEST-BYTE
+	#01 #01 ALA [ #00 ] TEST-BYTE
+	#f8 #01 ALA [ #01 ] TEST-BYTE
+	#01 #f8 ALA [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 ALA2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 ALA2 [ #00 ] TEST-BYTE
+	#f801 #01f8 ALA2 [ #01 ] TEST-BYTE
+	#01f8 #f801 ALA2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 ALAa NSI NSI [ #f0 ] TEST-BYTE
+	#01 #01 ALAa NSI NSI [ #02 ] TEST-BYTE
+	#f8 #01 ALAa NSI NSI [ #fa ] TEST-BYTE
+	#01 #f8 ALAa NSI NSI [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 ALA2a #00 NSI2 NSI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 ALA2a #00 NSI2 NSI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 ALA2a #00 NSI2 NSI2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 ALA2a #00 NSI2 NSI2 [ #faf9 ] TEST-SHORT
+	OPCODE
+
+	\ SEW 
+	#f8 #f8 SEW [ #00 ] TEST-BYTE
+	#01 #01 SEW [ #00 ] TEST-BYTE
+	#f8 #01 SEW [ #01 ] TEST-BYTE
+	#01 #f8 SEW [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 SEW2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 SEW2 [ #00 ] TEST-BYTE
+	#f801 #01f8 SEW2 [ #01 ] TEST-BYTE
+	#01f8 #f801 SEW2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 SEWa NSI NSI [ #f0 ] TEST-BYTE
+	#01 #01 SEWa NSI NSI [ #02 ] TEST-BYTE
+	#f8 #01 SEWa NSI NSI [ #fa ] TEST-BYTE
+	#01 #f8 SEWa NSI NSI [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 SEW2a #00 NSI2 NSI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 SEW2a #00 NSI2 NSI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 SEW2a #00 NSI2 NSI2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 SEW2a #00 NSI2 NSI2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ LIL 
+	#f8 #f8 LIL [ #00 ] TEST-BYTE
+	#01 #01 LIL [ #00 ] TEST-BYTE
+	#f8 #01 LIL [ #00 ] TEST-BYTE
+	#01 #f8 LIL [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 LIL2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 LIL2 [ #00 ] TEST-BYTE
+	#f801 #01f8 LIL2 [ #00 ] TEST-BYTE
+	#01f8 #f801 LIL2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 LILa NSI NSI [ #f0 ] TEST-BYTE
+	#01 #01 LILa NSI NSI [ #02 ] TEST-BYTE
+	#f8 #01 LILa NSI NSI [ #f9 ] TEST-BYTE
+	#01 #f8 LILa NSI NSI [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 LIL2a #00 NSI2 NSI2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 LIL2a #00 NSI2 NSI2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 LIL2a #00 NSI2 NSI2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 LIL2a #00 NSI2 NSI2 [ #faf9 ] TEST-SHORT
+	TYPE
+
+	\ Arithmetic 
+
+	\ NSI 
+	#ff #00 NSI [ #ff ] TEST-BYTE
+	#01 #ff NSI [ #00 ] TEST-BYTE
+	#ff #ff NSI [ #fe ] TEST-BYTE
+	#fe #ff NSI [ #fd ] TEST-BYTE
+	MODE
+	#ffff #0000 NSI2 [ #ffff ] TEST-SHORT
+	#0001 #ffff NSI2 [ #0000 ] TEST-SHORT
+	#ffff #ffff NSI2 [ #fffe ] TEST-SHORT
+	#fffe #ffff NSI2 [ #fffd ] TEST-SHORT
+	MODE
+	#ff #00 NSIa NSI NSI [ #fe ] TEST-BYTE
+	#01 #ff NSIa NSI NSI [ #00 ] TEST-BYTE
+	#ff #ff NSIa NSI NSI [ #fc ] TEST-BYTE
+	#fe #ff NSIa NSI NSI [ #fa ] TEST-BYTE
+	MODE
+	#ffff #0000 NSI2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#0001 #ffff NSI2a NSI2 NSI2 [ #0000 ] TEST-SHORT
+	#ffff #ffff NSI2a NSI2 NSI2 [ #fffc ] TEST-SHORT
+	#fffe #ffff NSI2a NSI2 NSI2 [ #fffa ] TEST-SHORT
+	OPCODE
+
+	\ NWE 
+	#ff #00 NWE [ #ff ] TEST-BYTE
+	#01 #ff NWE [ #02 ] TEST-BYTE
+	#ff #ff NWE [ #00 ] TEST-BYTE
+	#fe #ff NWE [ #ff ] TEST-BYTE
+	MODE
+	#ffff #0000 NWE2 [ #ffff ] TEST-SHORT
+	#0001 #ffff NWE2 [ #0002 ] TEST-SHORT
+	#ffff #ffff NWE2 [ #0000 ] TEST-SHORT
+	#fffe #ffff NWE2 [ #ffff ] TEST-SHORT
+	MODE
+	#ff #00 NWEa NSI NSI [ #fe ] TEST-BYTE
+	#01 #ff NWEa NSI NSI [ #02 ] TEST-BYTE
+	#ff #ff NWEa NSI NSI [ #fe ] TEST-BYTE
+	#fe #ff NWEa NSI NSI [ #fc ] TEST-BYTE
+	MODE
+	#ffff #0000 NWE2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#0001 #ffff NWE2a NSI2 NSI2 [ #0002 ] TEST-SHORT
+	#ffff #ffff NWE2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#fffe #ffff NWE2a NSI2 NSI2 [ #fffc ] TEST-SHORT
+	OPCODE
+
+	\ NKU 
+	#00 #01 NKU [ #00 ] TEST-BYTE
+	#3f #e7 NKU [ #d9 ] TEST-BYTE
+	#37 #3f NKU [ #89 ] TEST-BYTE
+	#10 #02 NKU [ #20 ] TEST-BYTE
+	MODE
+	#1000 #0003 NKU2 [ #3000 ] TEST-SHORT
+	#abcd #1234 NKU2 [ #4fa4 ] TEST-SHORT
+	#8000 #0200 NKU2 [ #0000 ] TEST-SHORT
+	#2222 #0003 NKU2 [ #6666 ] TEST-SHORT
+	MODE
+	#00 #01 NKUa NSI NSI [ #01 ] TEST-BYTE
+	#3f #e7 NKUa NSI NSI [ #ff ] TEST-BYTE
+	#37 #3f NKUa NSI NSI [ #ff ] TEST-BYTE
+	#10 #02 NKUa NSI NSI [ #32 ] TEST-BYTE
+	MODE
+	#1000 #0003 NKU2a NSI2 NSI2 [ #4003 ] TEST-SHORT
+	#abcd #1234 NKU2a NSI2 NSI2 [ #0da5 ] TEST-SHORT
+	#8000 #0200 NKU2a NSI2 NSI2 [ #8200 ] TEST-SHORT
+	#2222 #0003 NKU2a NSI2 NSI2 [ #888b ] TEST-SHORT
+	OPCODE
+
+	\ NKI 
+	#10 #02 NKI [ #08 ] TEST-BYTE
+	#20 #20 NKI [ #01 ] TEST-BYTE
+	#34 #01 NKI [ #34 ] TEST-BYTE
+	#02 #ef NKI [ #00 ] TEST-BYTE
+	MODE
+	#1000 #0040 NKI2 [ #0040 ] TEST-SHORT
+	#abcd #1234 NKI2 [ #0009 ] TEST-SHORT
+	#8000 #0200 NKI2 [ #0040 ] TEST-SHORT
+	#2222 #0003 NKI2 [ #0b60 ] TEST-SHORT
+	MODE
+	#10 #02 NKIa NSI NSI [ #1a ] TEST-BYTE
+	#20 #20 NKIa NSI NSI [ #41 ] TEST-BYTE
+	#34 #01 NKIa NSI NSI [ #69 ] TEST-BYTE
+	#02 #ef NKIa NSI NSI [ #f1 ] TEST-BYTE
+	MODE
+	#1000 #0040 NKI2a NSI2 NSI2 [ #1080 ] TEST-SHORT
+	#abcd #1234 NKI2a NSI2 NSI2 [ #be0a ] TEST-SHORT
+	#8000 #0200 NKI2a NSI2 NSI2 [ #8240 ] TEST-SHORT
+	#2222 #0003 NKI2a NSI2 NSI2 [ #2d85 ] TEST-SHORT
+	TYPE
+
+	\ Stack 
+
+	\ MUT 
+	#01 MUT [ #02 ] TEST-BYTE
+	#ff MUT [ #00 ] TEST-BYTE
+	#fe MUT [ #ff ] TEST-BYTE
+	#00 MUT [ #01 ] TEST-BYTE
+	MODE
+	#0001 MUT2 [ #0002 ] TEST-SHORT
+	#ffff MUT2 [ #0000 ] TEST-SHORT
+	#fffe MUT2 [ #ffff ] TEST-SHORT
+	#0000 MUT2 [ #0001 ] TEST-SHORT
+	MODE
+	#01 MUTa NSI [ #03 ] TEST-BYTE
+	#ff MUTa NSI [ #ff ] TEST-BYTE
+	#fe MUTa NSI [ #fd ] TEST-BYTE
+	#00 MUTa NSI [ #01 ] TEST-BYTE
+	MODE
+	#0001 MUT2a NSI2 [ #0003 ] TEST-SHORT
+	#ffff MUT2a NSI2 [ #ffff ] TEST-SHORT
+	#fffe MUT2a NSI2 [ #fffd ] TEST-SHORT
+	#0000 MUT2a NSI2 [ #0001 ] TEST-SHORT
+	OPCODE
+
+	\ WEK 
+	#0a #0b WEK [ #0a ] TEST-BYTE
+	#0a #0b #0c WEK WEK [ #0a ] TEST-BYTE
+	#0a #0b #0c NSI WEK [ #0a ] TEST-BYTE
+	#0a #0b #0c WEK NSI [ #15 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d WEK2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f WEK2 WEK2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f NSI2 WEK2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f WEK2 NSI2 [ #1618 ] TEST-SHORT
+	MODE
+	#0a #0b WEKa [ #0b ] TEST-BYTE WEK
+	#0a #0b #0c WEKa WEK [ #0b ] TEST-BYTE WEK
+	#0a #0b #0c NSI WEKa [ #17 ] TEST-BYTE WEK
+	#0a #0b #0c WEKa NSI [ #17 ] TEST-BYTE WEK
+	MODE
+	#0a0b #0c0d WEK2a [ #0c0d ] TEST-SHORT WEK2
+	#0a0b #0c0d #0e0f WEK2a WEK2 [ #0c0d ] TEST-SHORT WEK2
+	#0a0b #0c0d #0e0f NSI2 WEK2a [ #1a1c ] TEST-SHORT WEK2
+	#0a0b #0c0d #0e0f WEK2a NSI2 [ #1a1c ] TEST-SHORT WEK2
+	OPCODE
+
+	\ KIN 
+	#0a #0b KIN NSI NSI [ #20 ] TEST-BYTE
+	MODE
+	#0a0b KIN2 NSI2 [ #1416 ] TEST-SHORT
+	MODE
+	#0a #0b KINa NSI NSI NSI [ #2b ] TEST-BYTE
+	MODE
+	#0a0b KIN2a NSI2 NSI2 [ #1e21 ] TEST-SHORT
+	OPCODE
+
+	\ WKP 
+	#12 #34 #56 WKP NSI [ #68 ] TEST-BYTE
+	MODE
+	#1234 #5678 #9abc WKP2 NSI2 [ #acf0 ] TEST-SHORT
+	MODE
+	#12 #34 #56 WKPa NSI NSI [ #e0 ] TEST-BYTE WEK
+	MODE
+	#1234 #5678 #9abc WKP2a NSI2 NSI2 [ #8bf0 ] TEST-SHORT WEK2
+	OPCODE
+
+	\ ANT 
+	#02 #10 ANT NKI [ #08 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d ANT2 WKP2 [ #0a0b ] TEST-SHORT
+	MODE
+	#02 #10 ANTa NKI NSI NSI [ #1a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d ANT2a WEK2 WEK2 WEK2 [ #0a0b ] TEST-SHORT
+	OPCODE
+
+	\ KNP 
+	#02 #10 KNP NKI NSI [ #0a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d KNP2 WKP2 NSI2 [ #1416 ] TEST-SHORT
+	MODE
+	#02 #10 KNPa NKI NSI NSI NSI [ #1c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d KNP2a WKP2 NSI2 NSI2 NSI2 [ #2a2e ] TEST-SHORT
+	OPCODE
+
+	\ SIK 
+	#02 #04 #10 SIK NKI NSI [ #0c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f SIK2 NSI2 WKP2 [ #161a ] TEST-SHORT
+	MODE
+	#02 #04 #10 SIKa NKI NSI NSI NSI NSI [ #22 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f SIK2a NSI2 WKP2 NSI2 NSI2 NSI2 [ #3841 ] TEST-SHORT
+	TYPE
+
+	\ Bitwise 
+
+	\ LAL 
+	#fc #3f LAL [ #3c ] TEST-BYTE
+	#f0 #0f LAL [ #00 ] TEST-BYTE
+	#ff #3c LAL [ #3c ] TEST-BYTE
+	#02 #03 LAL [ #02 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 LAL2 [ #00f0 ] TEST-SHORT
+	#aaaa #5555 LAL2 [ #0000 ] TEST-SHORT
+	#ffff #1234 LAL2 [ #1234 ] TEST-SHORT
+	#abcd #0a0c LAL2 [ #0a0c ] TEST-SHORT
+	MODE
+	#fc #3f LALa NSI NSI [ #77 ] TEST-BYTE
+	#f0 #0f LALa NSI NSI [ #ff ] TEST-BYTE
+	#ff #3c LALa NSI NSI [ #77 ] TEST-BYTE
+	#02 #03 LALa NSI NSI [ #07 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 LAL2a NSI2 NSI2 [ #f2d0 ] TEST-SHORT
+	#aaaa #5555 LAL2a NSI2 NSI2 [ #ffff ] TEST-SHORT
+	#ffff #1234 LAL2a NSI2 NSI2 [ #2467 ] TEST-SHORT
+	#abcd #0a0c LAL2a NSI2 NSI2 [ #bfe5 ] TEST-SHORT
+	OPCODE
+
+	\ LAN 
+	#0f #f0 LAN [ #ff ] TEST-BYTE
+	#ab #cd LAN [ #ef ] TEST-BYTE
+	#12 #34 LAN [ #36 ] TEST-BYTE
+	#88 #10 LAN [ #98 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 LAN2 [ #ffff ] TEST-SHORT
+	#abab #cdcd LAN2 [ #efef ] TEST-SHORT
+	#1122 #1234 LAN2 [ #1336 ] TEST-SHORT
+	#8888 #1000 LAN2 [ #9888 ] TEST-SHORT
+	MODE
+	#0f #f0 LANa NSI NSI [ #fe ] TEST-BYTE
+	#ab #cd LANa NSI NSI [ #67 ] TEST-BYTE
+	#12 #34 LANa NSI NSI [ #7c ] TEST-BYTE
+	#88 #10 LANa NSI NSI [ #30 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 LAN2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#abab #cdcd LAN2a NSI2 NSI2 [ #6967 ] TEST-SHORT
+	#1122 #1234 LAN2a NSI2 NSI2 [ #368c ] TEST-SHORT
+	#8888 #1000 LAN2a NSI2 NSI2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ LWA 
+	#00 #00 LWA [ #00 ] TEST-BYTE
+	#ff #00 LWA [ #ff ] TEST-BYTE
+	#aa #55 LWA [ #ff ] TEST-BYTE
+	#ff #ff LWA [ #00 ] TEST-BYTE
+	MODE
+	#ffff #ff00 LWA2 [ #00ff ] TEST-SHORT
+	#aaaa #5555 LWA2 [ #ffff ] TEST-SHORT
+	#1122 #1234 LWA2 [ #0316 ] TEST-SHORT
+	#8888 #1000 LWA2 [ #9888 ] TEST-SHORT
+	MODE
+	#00 #00 LWAa NSI NSI [ #00 ] TEST-BYTE
+	#ff #00 LWAa NSI NSI [ #fe ] TEST-BYTE
+	#aa #55 LWAa NSI NSI [ #fe ] TEST-BYTE
+	#ff #ff LWAa NSI NSI [ #fe ] TEST-BYTE
+	MODE
+	#ffff #ff00 LWA2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#aaaa #5555 LWA2a NSI2 NSI2 [ #fffe ] TEST-SHORT
+	#1122 #1234 LWA2a NSI2 NSI2 [ #266c ] TEST-SHORT
+	#8888 #1000 LWA2a NSI2 NSI2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ LTA 
+	#ff #08 LTA [ #00 ] TEST-BYTE
+	#ff #e0 LTA [ #00 ] TEST-BYTE
+	#ff #11 LTA [ #fe ] TEST-BYTE
+	#ff #12 LTA [ #7e ] TEST-BYTE
+	MODE
+	#ffff #01 LTA2 [ #7fff ] TEST-SHORT
+	#ffff #70 LTA2 [ #ff80 ] TEST-SHORT
+	#ffff #7e LTA2 [ #0180 ] TEST-SHORT
+	#ffff #e3 LTA2 [ #c000 ] TEST-SHORT
+	MODE
+	#ff #08 LTAa NSI NSI [ #07 ] TEST-BYTE
+	#ff #e0 LTAa NSI NSI [ #df ] TEST-BYTE
+	#ff #11 LTAa NSI NSI [ #0e ] TEST-BYTE
+	#ff #12 LTAa NSI NSI [ #8f ] TEST-BYTE
+	MODE
+	#ffff #01 LTA2a SIK WEK NSI2 [ #7ffe ] TEST-SHORT
+	#ffff #70 LTA2a SIK WEK NSI2 [ #ff7f ] TEST-SHORT
+	#ffff #7e LTA2a SIK WEK NSI2 [ #017f ] TEST-SHORT
+	#ffff #e3 LTA2a SIK WEK NSI2 [ #bfff ] TEST-SHORT
+	TYPE
+
+	\ Memory 
+
+	\ STL/LKL 
+	#ab .zeropage/byte STL .zeropage/byte LKL [ #ab ] TEST-BYTE
+	#cd .zeropage/byte STL .zeropage/byte LKL [ #cd ] TEST-BYTE
+	MODE
+	#1234 .zeropage/short STL2 .zeropage/short LKL2 [ #1234 ] TEST-SHORT
+	#5678 .zeropage/short STL2 .zeropage/short LKL2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ STP/LKP 
+	[ NAN &before1 $1 ] WEK
+	[ NAN2 &before2 $2 ] WEK2
+	#22 ,&before1 STP ,&before1 LKP [ #22 ] TEST-BYTE
+	#ef ,&after1 STP ,&after1 LKP [ #ef ] TEST-BYTE
+	MODE
+	#1234 ,&before2 STP2 ,&before2 LKP2 [ #1234 ] TEST-SHORT
+	#5678 ,&after2 STP2 ,&after2 LKP2 [ #5678 ] TEST-SHORT
+	[ NAN &after1 $1 ] WEK
+	[ NAN2 &after2 $2 ] WEK2
+	OPCODE
+
+	\ SIT/LUK 
+	#34 ;absolute/byte SIT ;absolute/byte LUK [ #34 ] TEST-BYTE
+	#56 ;absolute/byte SIT ;absolute/byte LUK [ #56 ] TEST-BYTE
+	MODE
+	#1234 ;absolute/short SIT2 ;absolute/short LUK2 [ #1234 ] TEST-SHORT
+	#5678 ;absolute/short SIT2 ;absolute/short LUK2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ KUT/TOK 
+	NAN "1 EMIT
+	NAN "1 EMIT
+	TYPE
+
+	\ Branching 
+
+	\ TAW 
+	#12 #34 ,&reljmp TAW ANT &reljmp WEK [ #12 ] TEST-BYTE
+	MODE
+	#56 #78 ;&absjmp TAW2 ANT &absjmp WEK [ #56 ] TEST-BYTE
+	OPCODE
+
+	\ TWK 
+	#23 #01 ,&reljcn-y TWK MUT &reljcn-y [ #23 ] TEST-BYTE
+	#23 #00 ,&reljcn-n TWK MUT &reljcn-n [ #24 ] TEST-BYTE
+	MODE
+	#23 #01 ;&absjcn-y TWK2 MUT &absjcn-y [ #23 ] TEST-BYTE
+	#23 #00 ;&absjcn-n TWK2 MUT &absjcn-n [ #24 ] TEST-BYTE
+	OPCODE
+
+	\ TWP - Requires return mode 
+	#12 #34 ;routine TWP2 [ #46 ] TEST-BYTE
+	OPCODE
+
+	\ POK 
+	#0a POK #0b POK NSIp POKp [ #15 ] TEST-BYTE
+	MODE
+	#000a POK2 #000b POK2 NSI2p POK2p [ #0015 ] TEST-SHORT
+	TYPE
+
+	\ Keep 
+	#12 #34 NSIa NSI NSI [ #8c ] TEST-BYTE
+	OPCODE
+
+	#010e TOK
+	#000f TOK
+
+PIN
+
+@routine ( a b -- c )
+
+	NSI
+
+TAW2p
+
+@absolute 
+	&byte $1 &short $2

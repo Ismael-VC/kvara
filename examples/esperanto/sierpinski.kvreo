@@ -2,7 +2,7 @@
 
 @sierpinski ( -> )
 	( masko ) [ LIT2r 0a18 ] [ LIT2r 2018 ] 
-	( grandeco ) [ LIT2 &grandeco 1001 ] SUB
+	( grandeco ) [ LIT2 &grandeco 0801 ] SUB
 	&>vertikala ( -- )
 		DUP PGRk
 		&>plenigita ( longeco -- )

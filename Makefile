@@ -41,21 +41,29 @@ test: en
 	@echo "Testing kvrasm."
 	@bin/kvrasm examples/english/sierpinski.kvr roms/sierpinski.rom
 	@utils/uxncli roms/sierpinski.rom
+	@bin/kvrasm examples/english/tests.kvr roms/tests.rom
+	@utils/uxncli roms/tests.rom
 
 test-es: es
 	@echo "Testing kvrasm-es."
 	@bin/kvrasm-es examples/spanish/sierpinski.kvres roms/sierpinski-es.rom
 	@utils/uxncli roms/sierpinski-es.rom
+	@bin/kvrasm-es examples/spanish/tests.kvres roms/tests-es.rom
+	@utils/uxncli roms/tests-es.rom
 
 test-eo: eo
 	@echo "Testing kvrasm-eo."
 	@bin/kvrasm-eo examples/esperanto/sierpinski.kvreo roms/sierpinski-eo.rom
 	@utils/uxncli roms/sierpinski-eo.rom
+	@bin/kvrasm-eo examples/esperanto/tests.kvreo roms/tests-eo.rom
+	@utils/uxncli roms/tests-eo.rom
 
 test-tok: tok
 	@echo "Testing kvrasm-tok."
 	@bin/kvrasm-tok examples/toki-pona/sierpinski.kvrtok roms/sierpinski-tok.rom
 	@utils/uxncli roms/sierpinski-tok.rom
+	@bin/kvrasm-tok examples/toki-pona/tests.kvrtok roms/tests-tok.rom
+	@utils/uxncli roms/tests-tok.rom
 
 install-all: all install install-es install-eo install-tok
 

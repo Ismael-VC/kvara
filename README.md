@@ -92,7 +92,7 @@ $ kvrprt source.tal  lang  # Creates: source.kvr{lang}
 
 ## TODO
 
-- [ ] Implement `kvrptr` (Kvara porter).
+- [x] Implement `kvrptr` (Kvara porter).
 - [ ] Explain how to contribute and add a new language.
 - [ ] Implement another utility to scafold and make easier adding new languages.
 - [ ] Use the opcode test for all languages.

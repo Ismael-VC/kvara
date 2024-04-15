@@ -1,0 +1,464 @@
+\ Opcode Tester 
+
+\ Requirements: 
+\    IGU/IGU2 should put #00 or #01 on the stack
+\    #18 DIS should output ascii character to console 
+
+%EMIT { #18 DIS }
+%TEST-SHORT { IGU2 #30 SUM EMIT }
+%TEST-BYTE { IGU #30 SUM EMIT }
+%MODE { #20 EMIT }
+%OPCODE { #0a EMIT }
+%TYPE { OPCODE OPCODE }
+
+|0000
+
+	@zeropage 
+		&byte $1 &short $2
+
+|0100
+
+	\ Logic 
+
+	\ IGU 
+	#f8 #f8 IGU [ #01 ] TEST-BYTE
+	#01 #01 IGU [ #01 ] TEST-BYTE
+	#f8 #01 IGU [ #00 ] TEST-BYTE
+	#01 #f8 IGU [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 IGU2 [ #01 ] TEST-BYTE
+	#01f8 #01f8 IGU2 [ #01 ] TEST-BYTE
+	#f801 #01f8 IGU2 [ #00 ] TEST-BYTE
+	#01f8 #f801 IGU2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 IGUc SUM SUM [ #f1 ] TEST-BYTE
+	#01 #01 IGUc SUM SUM [ #03 ] TEST-BYTE
+	#f8 #01 IGUc SUM SUM [ #f9 ] TEST-BYTE
+	#01 #f8 IGUc SUM SUM [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 IGU2c #00 SUM2 SUM2 [ #f102 ] TEST-SHORT
+	#01f8 #01f8 IGU2c #00 SUM2 SUM2 [ #04f0 ] TEST-SHORT
+	#f801 #01f8 IGU2c #00 SUM2 SUM2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 IGU2c #00 SUM2 SUM2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ NIG 
+	#f8 #f8 NIG [ #00 ] TEST-BYTE
+	#01 #01 NIG [ #00 ] TEST-BYTE
+	#f8 #01 NIG [ #01 ] TEST-BYTE
+	#01 #f8 NIG [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 NIG2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 NIG2 [ #00 ] TEST-BYTE
+	#f801 #01f8 NIG2 [ #01 ] TEST-BYTE
+	#01f8 #f801 NIG2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 NIGc SUM SUM [ #f0 ] TEST-BYTE
+	#01 #01 NIGc SUM SUM [ #02 ] TEST-BYTE
+	#f8 #01 NIGc SUM SUM [ #fa ] TEST-BYTE
+	#01 #f8 NIGc SUM SUM [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 NIG2c #00 SUM2 SUM2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 NIG2c #00 SUM2 SUM2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 NIG2c #00 SUM2 SUM2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 NIG2c #00 SUM2 SUM2 [ #faf9 ] TEST-SHORT
+	OPCODE
+
+	\ MAQ 
+	#f8 #f8 MAQ [ #00 ] TEST-BYTE
+	#01 #01 MAQ [ #00 ] TEST-BYTE
+	#f8 #01 MAQ [ #01 ] TEST-BYTE
+	#01 #f8 MAQ [ #00 ] TEST-BYTE
+	MODE
+	#f801 #f801 MAQ2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 MAQ2 [ #00 ] TEST-BYTE
+	#f801 #01f8 MAQ2 [ #01 ] TEST-BYTE
+	#01f8 #f801 MAQ2 [ #00 ] TEST-BYTE
+	MODE
+	#f8 #f8 MAQc SUM SUM [ #f0 ] TEST-BYTE
+	#01 #01 MAQc SUM SUM [ #02 ] TEST-BYTE
+	#f8 #01 MAQc SUM SUM [ #fa ] TEST-BYTE
+	#01 #f8 MAQc SUM SUM [ #f9 ] TEST-BYTE
+	MODE
+	#f801 #f801 MAQ2c #00 SUM2 SUM2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 MAQ2c #00 SUM2 SUM2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 MAQ2c #00 SUM2 SUM2 [ #faf9 ] TEST-SHORT
+	#01f8 #f801 MAQ2c #00 SUM2 SUM2 [ #f9f9 ] TEST-SHORT
+	OPCODE
+
+	\ MEQ 
+	#f8 #f8 MEQ [ #00 ] TEST-BYTE
+	#01 #01 MEQ [ #00 ] TEST-BYTE
+	#f8 #01 MEQ [ #00 ] TEST-BYTE
+	#01 #f8 MEQ [ #01 ] TEST-BYTE
+	MODE
+	#f801 #f801 MEQ2 [ #00 ] TEST-BYTE
+	#01f8 #01f8 MEQ2 [ #00 ] TEST-BYTE
+	#f801 #01f8 MEQ2 [ #00 ] TEST-BYTE
+	#01f8 #f801 MEQ2 [ #01 ] TEST-BYTE
+	MODE
+	#f8 #f8 MEQc SUM SUM [ #f0 ] TEST-BYTE
+	#01 #01 MEQc SUM SUM [ #02 ] TEST-BYTE
+	#f8 #01 MEQc SUM SUM [ #f9 ] TEST-BYTE
+	#01 #f8 MEQc SUM SUM [ #fa ] TEST-BYTE
+	MODE
+	#f801 #f801 MEQ2c #00 SUM2 SUM2 [ #f002 ] TEST-SHORT
+	#01f8 #01f8 MEQ2c #00 SUM2 SUM2 [ #03f0 ] TEST-SHORT
+	#f801 #01f8 MEQ2c #00 SUM2 SUM2 [ #f9f9 ] TEST-SHORT
+	#01f8 #f801 MEQ2c #00 SUM2 SUM2 [ #faf9 ] TEST-SHORT
+	TYPE
+
+	\ Arithmetic 
+
+	\ SUM 
+	#ff #00 SUM [ #ff ] TEST-BYTE
+	#01 #ff SUM [ #00 ] TEST-BYTE
+	#ff #ff SUM [ #fe ] TEST-BYTE
+	#fe #ff SUM [ #fd ] TEST-BYTE
+	MODE
+	#ffff #0000 SUM2 [ #ffff ] TEST-SHORT
+	#0001 #ffff SUM2 [ #0000 ] TEST-SHORT
+	#ffff #ffff SUM2 [ #fffe ] TEST-SHORT
+	#fffe #ffff SUM2 [ #fffd ] TEST-SHORT
+	MODE
+	#ff #00 SUMc SUM SUM [ #fe ] TEST-BYTE
+	#01 #ff SUMc SUM SUM [ #00 ] TEST-BYTE
+	#ff #ff SUMc SUM SUM [ #fc ] TEST-BYTE
+	#fe #ff SUMc SUM SUM [ #fa ] TEST-BYTE
+	MODE
+	#ffff #0000 SUM2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#0001 #ffff SUM2c SUM2 SUM2 [ #0000 ] TEST-SHORT
+	#ffff #ffff SUM2c SUM2 SUM2 [ #fffc ] TEST-SHORT
+	#fffe #ffff SUM2c SUM2 SUM2 [ #fffa ] TEST-SHORT
+	OPCODE
+
+	\ SUS 
+	#ff #00 SUS [ #ff ] TEST-BYTE
+	#01 #ff SUS [ #02 ] TEST-BYTE
+	#ff #ff SUS [ #00 ] TEST-BYTE
+	#fe #ff SUS [ #ff ] TEST-BYTE
+	MODE
+	#ffff #0000 SUS2 [ #ffff ] TEST-SHORT
+	#0001 #ffff SUS2 [ #0002 ] TEST-SHORT
+	#ffff #ffff SUS2 [ #0000 ] TEST-SHORT
+	#fffe #ffff SUS2 [ #ffff ] TEST-SHORT
+	MODE
+	#ff #00 SUSc SUM SUM [ #fe ] TEST-BYTE
+	#01 #ff SUSc SUM SUM [ #02 ] TEST-BYTE
+	#ff #ff SUSc SUM SUM [ #fe ] TEST-BYTE
+	#fe #ff SUSc SUM SUM [ #fc ] TEST-BYTE
+	MODE
+	#ffff #0000 SUS2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#0001 #ffff SUS2c SUM2 SUM2 [ #0002 ] TEST-SHORT
+	#ffff #ffff SUS2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#fffe #ffff SUS2c SUM2 SUM2 [ #fffc ] TEST-SHORT
+	OPCODE
+
+	\ MUL 
+	#00 #01 MUL [ #00 ] TEST-BYTE
+	#3f #e7 MUL [ #d9 ] TEST-BYTE
+	#37 #3f MUL [ #89 ] TEST-BYTE
+	#10 #02 MUL [ #20 ] TEST-BYTE
+	MODE
+	#1000 #0003 MUL2 [ #3000 ] TEST-SHORT
+	#abcd #1234 MUL2 [ #4fa4 ] TEST-SHORT
+	#8000 #0200 MUL2 [ #0000 ] TEST-SHORT
+	#2222 #0003 MUL2 [ #6666 ] TEST-SHORT
+	MODE
+	#00 #01 MULc SUM SUM [ #01 ] TEST-BYTE
+	#3f #e7 MULc SUM SUM [ #ff ] TEST-BYTE
+	#37 #3f MULc SUM SUM [ #ff ] TEST-BYTE
+	#10 #02 MULc SUM SUM [ #32 ] TEST-BYTE
+	MODE
+	#1000 #0003 MUL2c SUM2 SUM2 [ #4003 ] TEST-SHORT
+	#abcd #1234 MUL2c SUM2 SUM2 [ #0da5 ] TEST-SHORT
+	#8000 #0200 MUL2c SUM2 SUM2 [ #8200 ] TEST-SHORT
+	#2222 #0003 MUL2c SUM2 SUM2 [ #888b ] TEST-SHORT
+	OPCODE
+
+	\ DIV 
+	#10 #02 DIV [ #08 ] TEST-BYTE
+	#20 #20 DIV [ #01 ] TEST-BYTE
+	#34 #01 DIV [ #34 ] TEST-BYTE
+	#02 #ef DIV [ #00 ] TEST-BYTE
+	MODE
+	#1000 #0040 DIV2 [ #0040 ] TEST-SHORT
+	#abcd #1234 DIV2 [ #0009 ] TEST-SHORT
+	#8000 #0200 DIV2 [ #0040 ] TEST-SHORT
+	#2222 #0003 DIV2 [ #0b60 ] TEST-SHORT
+	MODE
+	#10 #02 DIVc SUM SUM [ #1a ] TEST-BYTE
+	#20 #20 DIVc SUM SUM [ #41 ] TEST-BYTE
+	#34 #01 DIVc SUM SUM [ #69 ] TEST-BYTE
+	#02 #ef DIVc SUM SUM [ #f1 ] TEST-BYTE
+	MODE
+	#1000 #0040 DIV2c SUM2 SUM2 [ #1080 ] TEST-SHORT
+	#abcd #1234 DIV2c SUM2 SUM2 [ #be0a ] TEST-SHORT
+	#8000 #0200 DIV2c SUM2 SUM2 [ #8240 ] TEST-SHORT
+	#2222 #0003 DIV2c SUM2 SUM2 [ #2d85 ] TEST-SHORT
+	TYPE
+
+	\ Stack 
+
+	\ INC 
+	#01 INC [ #02 ] TEST-BYTE
+	#ff INC [ #00 ] TEST-BYTE
+	#fe INC [ #ff ] TEST-BYTE
+	#00 INC [ #01 ] TEST-BYTE
+	MODE
+	#0001 INC2 [ #0002 ] TEST-SHORT
+	#ffff INC2 [ #0000 ] TEST-SHORT
+	#fffe INC2 [ #ffff ] TEST-SHORT
+	#0000 INC2 [ #0001 ] TEST-SHORT
+	MODE
+	#01 INCc SUM [ #03 ] TEST-BYTE
+	#ff INCc SUM [ #ff ] TEST-BYTE
+	#fe INCc SUM [ #fd ] TEST-BYTE
+	#00 INCc SUM [ #01 ] TEST-BYTE
+	MODE
+	#0001 INC2c SUM2 [ #0003 ] TEST-SHORT
+	#ffff INC2c SUM2 [ #ffff ] TEST-SHORT
+	#fffe INC2c SUM2 [ #fffd ] TEST-SHORT
+	#0000 INC2c SUM2 [ #0001 ] TEST-SHORT
+	OPCODE
+
+	\ RET 
+	#0a #0b RET [ #0a ] TEST-BYTE
+	#0a #0b #0c RET RET [ #0a ] TEST-BYTE
+	#0a #0b #0c SUM RET [ #0a ] TEST-BYTE
+	#0a #0b #0c RET SUM [ #15 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f RET2 RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f SUM2 RET2 [ #0a0b ] TEST-SHORT
+	#0a0b #0c0d #0e0f RET2 SUM2 [ #1618 ] TEST-SHORT
+	MODE
+	#0a #0b RETc [ #0b ] TEST-BYTE RET
+	#0a #0b #0c RETc RET [ #0b ] TEST-BYTE RET
+	#0a #0b #0c SUM RETc [ #17 ] TEST-BYTE RET
+	#0a #0b #0c RETc SUM [ #17 ] TEST-BYTE RET
+	MODE
+	#0a0b #0c0d RET2c [ #0c0d ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f RET2c RET2 [ #0c0d ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f SUM2 RET2c [ #1a1c ] TEST-SHORT RET2
+	#0a0b #0c0d #0e0f RET2c SUM2 [ #1a1c ] TEST-SHORT RET2
+	OPCODE
+
+	\ DUP 
+	#0a #0b DUP SUM SUM [ #20 ] TEST-BYTE
+	MODE
+	#0a0b DUP2 SUM2 [ #1416 ] TEST-SHORT
+	MODE
+	#0a #0b DUPc SUM SUM SUM [ #2b ] TEST-BYTE
+	MODE
+	#0a0b DUP2c SUM2 SUM2 [ #1e21 ] TEST-SHORT
+	OPCODE
+
+	\ COR 
+	#12 #34 #56 COR SUM [ #68 ] TEST-BYTE
+	MODE
+	#1234 #5678 #9abc COR2 SUM2 [ #acf0 ] TEST-SHORT
+	MODE
+	#12 #34 #56 CORc SUM SUM [ #e0 ] TEST-BYTE RET
+	MODE
+	#1234 #5678 #9abc COR2c SUM2 SUM2 [ #8bf0 ] TEST-SHORT RET2
+	OPCODE
+
+	\ CAM 
+	#02 #10 CAM DIV [ #08 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d CAM2 COR2 [ #0a0b ] TEST-SHORT
+	MODE
+	#02 #10 CAMc DIV SUM SUM [ #1a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d CAM2c RET2 RET2 RET2 [ #0a0b ] TEST-SHORT
+	OPCODE
+
+	\ SOB 
+	#02 #10 SOB DIV SUM [ #0a ] TEST-BYTE
+	MODE
+	#0a0b #0c0d SOB2 COR2 SUM2 [ #1416 ] TEST-SHORT
+	MODE
+	#02 #10 SOBc DIV SUM SUM SUM [ #1c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d SOB2c COR2 SUM2 SUM2 SUM2 [ #2a2e ] TEST-SHORT
+	OPCODE
+
+	\ ROT 
+	#02 #04 #10 ROT DIV SUM [ #0c ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f ROT2 SUM2 COR2 [ #161a ] TEST-SHORT
+	MODE
+	#02 #04 #10 ROTc DIV SUM SUM SUM SUM [ #22 ] TEST-BYTE
+	MODE
+	#0a0b #0c0d #0c0f ROT2c SUM2 COR2 SUM2 SUM2 SUM2 [ #3841 ] TEST-SHORT
+	TYPE
+
+	\ Bitwise 
+
+	\ YNB 
+	#fc #3f YNB [ #3c ] TEST-BYTE
+	#f0 #0f YNB [ #00 ] TEST-BYTE
+	#ff #3c YNB [ #3c ] TEST-BYTE
+	#02 #03 YNB [ #02 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 YNB2 [ #00f0 ] TEST-SHORT
+	#aaaa #5555 YNB2 [ #0000 ] TEST-SHORT
+	#ffff #1234 YNB2 [ #1234 ] TEST-SHORT
+	#abcd #0a0c YNB2 [ #0a0c ] TEST-SHORT
+	MODE
+	#fc #3f YNBc SUM SUM [ #77 ] TEST-BYTE
+	#f0 #0f YNBc SUM SUM [ #ff ] TEST-BYTE
+	#ff #3c YNBc SUM SUM [ #77 ] TEST-BYTE
+	#02 #03 YNBc SUM SUM [ #07 ] TEST-BYTE
+	MODE
+	#f0f0 #00f0 YNB2c SUM2 SUM2 [ #f2d0 ] TEST-SHORT
+	#aaaa #5555 YNB2c SUM2 SUM2 [ #ffff ] TEST-SHORT
+	#ffff #1234 YNB2c SUM2 SUM2 [ #2467 ] TEST-SHORT
+	#abcd #0a0c YNB2c SUM2 SUM2 [ #bfe5 ] TEST-SHORT
+	OPCODE
+
+	\ ONB 
+	#0f #f0 ONB [ #ff ] TEST-BYTE
+	#ab #cd ONB [ #ef ] TEST-BYTE
+	#12 #34 ONB [ #36 ] TEST-BYTE
+	#88 #10 ONB [ #98 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 ONB2 [ #ffff ] TEST-SHORT
+	#abab #cdcd ONB2 [ #efef ] TEST-SHORT
+	#1122 #1234 ONB2 [ #1336 ] TEST-SHORT
+	#8888 #1000 ONB2 [ #9888 ] TEST-SHORT
+	MODE
+	#0f #f0 ONBc SUM SUM [ #fe ] TEST-BYTE
+	#ab #cd ONBc SUM SUM [ #67 ] TEST-BYTE
+	#12 #34 ONBc SUM SUM [ #7c ] TEST-BYTE
+	#88 #10 ONBc SUM SUM [ #30 ] TEST-BYTE
+	MODE
+	#0f0f #f0f0 ONB2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#abab #cdcd ONB2c SUM2 SUM2 [ #6967 ] TEST-SHORT
+	#1122 #1234 ONB2c SUM2 SUM2 [ #368c ] TEST-SHORT
+	#8888 #1000 ONB2c SUM2 SUM2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ OEX 
+	#00 #00 OEX [ #00 ] TEST-BYTE
+	#ff #00 OEX [ #ff ] TEST-BYTE
+	#aa #55 OEX [ #ff ] TEST-BYTE
+	#ff #ff OEX [ #00 ] TEST-BYTE
+	MODE
+	#ffff #ff00 OEX2 [ #00ff ] TEST-SHORT
+	#aaaa #5555 OEX2 [ #ffff ] TEST-SHORT
+	#1122 #1234 OEX2 [ #0316 ] TEST-SHORT
+	#8888 #1000 OEX2 [ #9888 ] TEST-SHORT
+	MODE
+	#00 #00 OEXc SUM SUM [ #00 ] TEST-BYTE
+	#ff #00 OEXc SUM SUM [ #fe ] TEST-BYTE
+	#aa #55 OEXc SUM SUM [ #fe ] TEST-BYTE
+	#ff #ff OEXc SUM SUM [ #fe ] TEST-BYTE
+	MODE
+	#ffff #ff00 OEX2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#aaaa #5555 OEX2c SUM2 SUM2 [ #fffe ] TEST-SHORT
+	#1122 #1234 OEX2c SUM2 SUM2 [ #266c ] TEST-SHORT
+	#8888 #1000 OEX2c SUM2 SUM2 [ #3110 ] TEST-SHORT
+	OPCODE
+
+	\ DES 
+	#ff #08 DES [ #00 ] TEST-BYTE
+	#ff #e0 DES [ #00 ] TEST-BYTE
+	#ff #11 DES [ #fe ] TEST-BYTE
+	#ff #12 DES [ #7e ] TEST-BYTE
+	MODE
+	#ffff #01 DES2 [ #7fff ] TEST-SHORT
+	#ffff #70 DES2 [ #ff80 ] TEST-SHORT
+	#ffff #7e DES2 [ #0180 ] TEST-SHORT
+	#ffff #e3 DES2 [ #c000 ] TEST-SHORT
+	MODE
+	#ff #08 DESc SUM SUM [ #07 ] TEST-BYTE
+	#ff #e0 DESc SUM SUM [ #df ] TEST-BYTE
+	#ff #11 DESc SUM SUM [ #0e ] TEST-BYTE
+	#ff #12 DESc SUM SUM [ #8f ] TEST-BYTE
+	MODE
+	#ffff #01 DES2c ROT RET SUM2 [ #7ffe ] TEST-SHORT
+	#ffff #70 DES2c ROT RET SUM2 [ #ff7f ] TEST-SHORT
+	#ffff #7e DES2c ROT RET SUM2 [ #017f ] TEST-SHORT
+	#ffff #e3 DES2c ROT RET SUM2 [ #bfff ] TEST-SHORT
+	TYPE
+
+	\ Memory 
+
+	\ GUC/CAC 
+	#ab .zeropage/byte GUC .zeropage/byte CAC [ #ab ] TEST-BYTE
+	#cd .zeropage/byte GUC .zeropage/byte CAC [ #cd ] TEST-BYTE
+	MODE
+	#1234 .zeropage/short GUC2 .zeropage/short CAC2 [ #1234 ] TEST-SHORT
+	#5678 .zeropage/short GUC2 .zeropage/short CAC2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ GUR/CAR 
+	[ LIT &before1 $1 ] RET
+	[ LIT2 &before2 $2 ] RET2
+	#22 ,&before1 GUR ,&before1 CAR [ #22 ] TEST-BYTE
+	#ef ,&after1 GUR ,&after1 CAR [ #ef ] TEST-BYTE
+	MODE
+	#1234 ,&before2 GUR2 ,&before2 CAR2 [ #1234 ] TEST-SHORT
+	#5678 ,&after2 GUR2 ,&after2 CAR2 [ #5678 ] TEST-SHORT
+	[ LIT &after1 $1 ] RET
+	[ LIT2 &after2 $2 ] RET2
+	OPCODE
+
+	\ GUA/CAA 
+	#34 ;absolute/byte GUA ;absolute/byte CAA [ #34 ] TEST-BYTE
+	#56 ;absolute/byte GUA ;absolute/byte CAA [ #56 ] TEST-BYTE
+	MODE
+	#1234 ;absolute/short GUA2 ;absolute/short CAA2 [ #1234 ] TEST-SHORT
+	#5678 ;absolute/short GUA2 ;absolute/short CAA2 [ #5678 ] TEST-SHORT
+	OPCODE
+
+	\ DIE/DIS 
+	LIT "1 EMIT
+	LIT "1 EMIT
+	TYPE
+
+	\ Branching 
+
+	\ SAL 
+	#12 #34 ,&reljmp SAL CAM &reljmp RET [ #12 ] TEST-BYTE
+	MODE
+	#56 #78 ;&absjmp SAL2 CAM &absjmp RET [ #56 ] TEST-BYTE
+	OPCODE
+
+	\ SCN 
+	#23 #01 ,&reljcn-y SCN INC &reljcn-y [ #23 ] TEST-BYTE
+	#23 #00 ,&reljcn-n SCN INC &reljcn-n [ #24 ] TEST-BYTE
+	MODE
+	#23 #01 ;&absjcn-y SCN2 INC &absjcn-y [ #23 ] TEST-BYTE
+	#23 #00 ;&absjcn-n SCN2 INC &absjcn-n [ #24 ] TEST-BYTE
+	OPCODE
+
+	\ SRR - Requires return mode 
+	#12 #34 ;routine SRR2 [ #46 ] TEST-BYTE
+	OPCODE
+
+	\ RES 
+	#0a RES #0b RES SUMr RESr [ #15 ] TEST-BYTE
+	MODE
+	#000a RES2 #000b RES2 SUM2r RES2r [ #0015 ] TEST-SHORT
+	TYPE
+
+	\ Keep 
+	#12 #34 SUMc SUM SUM [ #8c ] TEST-BYTE
+	OPCODE
+
+	#010e DIS
+	#000f DIS
+
+INT
+
+@routine ( a b -- c )
+
+	SUM
+
+SAL2r
+
+@absolute 
+	&byte $1 &short $2
