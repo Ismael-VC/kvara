@@ -83,9 +83,18 @@ $ source ~/.bashrc
   from one supported kvara language to another there is the *Kvara porter* at
   `utils/kvrprt`.
 
+### Usage
+
+```bash
+$ kvrprt source.kvr[lang]  # Creates: source.tal
+$ kvrprt source.tal  lang  # Creates: source.kvr{lang}
+```
+
 ## TODO
 
 - [ ] Implement `kvrptr` (Kvara porter).
 - [ ] Explain how to contribute and add a new language.
 - [ ] Implement another utility to scafold and make easier adding new languages.
 - [ ] Use the opcode test for all languages.
+- [ ] If no output file name is given, by default use the input file name and
+      save rom to the current working directory.

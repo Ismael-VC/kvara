@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 from sys import argv
-from re import compile as regex
+from re import compile as regex, sub, MULTILINE, findall
 
 
-USAGE = 'kvr2tal source.kvr[es|eo|tok]  # creates: source.tal'
+USAGE = (
+    'kvrprt source.kvr{lang}  # Creates: source.tal\n'
+    'kvrprt source.tal  lang  # Creates: source.kvr{lang}'
+)
 LANGS = {
     'es': {
         'modes': ['2', 'c', 'r'],
@@ -122,7 +125,30 @@ LANGS = {
     }
 }
 
-def replace_opcodes(lang, source):
+def port_source(lang, source, target = 'en'):
+    if lang == 'tal':
+        opcodes = LANGS[target]['opcodes']
+        modes = LANGS[target]['modes']
+        _, k, r = modes
+        for replacement, opcode in {v: k for k, v in opcodes.items()}.items():
+            pattern = regex(rf'\b{opcode}(["2kr"]*)\b')
+            source = pattern.sub(
+                lambda match: replacement + ''.join([
+                    k if mode == 'k' else 
+                    r if mode == 'r' else 
+                    mode for mode in match.group(1)]
+                ), 
+                source
+            )
+        return source
+
+    kvr_comment = r'(\\ .*?)$'
+    matches = findall(kvr_comment, source, flags=MULTILINE)
+    for match in matches:
+        subs = match.split('\\')[1].strip()
+        source = source.replace(match, f"( {subs} )")
+    if lang == 'en':
+        return source
     opcodes = LANGS[lang]['opcodes']
     modes = LANGS[lang]['modes']
     _, k, r = modes
@@ -138,24 +164,36 @@ def replace_opcodes(lang, source):
     return source
 
 def main():
+    target = ''
     args_len = len(argv)
     if args_len < 2:
         print(USAGE)
+    if args_len == 3:
+        target = argv[2]
     file_name = argv[1]
+    out_name = file_name.split('.')[0] + '.tal'
     with open(file_name, 'r') as file:
         source = file.read()
-    if file_name.endswith('es'):
-        result = replace_opcodes('es', source)
+
+    if file_name.endswith('.kvr'):
+        source = port_source('en', source)
+    elif file_name.endswith('es'):
+        source = port_source('es', source)
     elif file_name.endswith('eo'):
-        result = replace_opcodes('eo', source)
+        source = port_source('eo', source)
     elif file_name.endswith('tok'):
-        result = replace_opcodes('tok', source)
+        source = port_source('tok', source)
+    elif file_name.endswith('.tal'):
+        if target:
+            source = port_source('tal', source, target)
+            out_name = file_name.split('.')[0] + f'.kvr{target}'
+        else:
+            return
     else:
         print('file not recognized')
 
-    out_name = file_name.split('.')[0] + '.tal'
     with open(out_name, 'w') as file:
-        file.write(result)
+        file.write(source)
 
 
 if __name__ == '__main__':
