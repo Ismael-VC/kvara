@@ -43,7 +43,7 @@ static int   shex(char *s) { int d, n = 0; char c; while((c = *s++)) { d = find(
 static int   scmp(char *a, char *b, int len) { int i = 0; while(a[i] == b[i]) if(!a[i] || ++i >= len) return 1; return 0; }
 static int   slen(char *a) { int i = 0; while (a[i]) i++; return i; }
 static char *copy(char *src, char *dst, char c) { while(*src && *src != c) *dst++ = *src++; *dst++ = 0; return dst; }
-static char *save(char *s, char c) { char *o = dictnext; while((*dictnext++ = *s++) && *s); *dictnext++ = c; return o; }
+static char *save(char *s, char c) { char *o = dictnext; while((*dictnext++ = *s++) && *s){}; *dictnext++ = c; return o; }
 static char *join(char *a, char j, char *b) { char *res = dictnext; save(a, j), save(b, 0); return res; }
 
 #define ishex(x) (shex(x) >= 0)
@@ -83,7 +83,7 @@ static Item * finditem(char *name, Item *list, int len) {
 static Uint8 findopcode(char *s) {
 	int i;
 	for(i = 0; i < 0x20; i++) {
-		int m = slen(ops[i]); 
+		int m = slen(ops[i]);
 		if(!scmp(ops[i], s, m)) continue;
 		if(!i) i |= (1 << 7);
 		while(s[m]) {
